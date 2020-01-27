@@ -1,0 +1,13 @@
+imports:
+    - { resource: '../tools/EasyCodingStandard/config/set/php70.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/php71.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/psr2.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/psr12.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/clean-code.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/common.yaml' }
+    - { resource: '../tools/EasyCodingStandard/config/set/symfony.yaml' }
+parameters:
+    skip:
+        PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+        PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff: ~

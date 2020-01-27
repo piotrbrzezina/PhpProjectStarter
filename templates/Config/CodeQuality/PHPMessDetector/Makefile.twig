@@ -1,0 +1,3 @@
+phpmd:
+	@echo "Analyzing (phpmd):"
+	docker-compose run --rm phpqa phpmd . text codesize,unusedcode --exclude vendor/,var/,bin/,migrations/,spec/,tests/

@@ -1,0 +1,17 @@
+    web:
+        build:
+            context: .
+            target: nginx
+            dockerfile: ./docker/Dockerfile
+        ports:
+            - "${APP_WEB_PORT:-80}:80"
+
+    php-fpm:
+        build:
+            context: .
+            target: app_dev_test
+            dockerfile: ./docker/Dockerfile
+        image: {{ projectName }}
+        volumes:
+            - .:/opt/app
+            - ./docker/php-fpm/php.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini

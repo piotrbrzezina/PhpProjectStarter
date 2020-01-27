@@ -1,0 +1,80 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+  projectPath: './project'
+
+services:
+  App\Config\DefaultConfigCollection $finalConfigCollection: '@App\Config\DefaultConfigCollection-finish'
+  App\Config\DefaultConfigCollection $initialConfigCollection: '@App\Config\DefaultConfigCollection-initial'
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    bind:
+      string $projectPath: '%projectPath%'
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+
+  App\:
+    resource: '../src/*'
+    exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+  App\Generator\ShellCommand\ShellCommandGenerator:
+    tags:
+      - { name: app.generator, priority: 100 }
+
+  _instanceof:
+    # services whose classes are instances of CustomInterface will be tagged automatically
+    App\Question\Framework\FrameworkOptionInterface:
+      tags: ['app.question.framework.option']
+
+    App\Question\Database\DatabaseOptionInterface:
+      tags: ['app.question.database.option']
+
+    App\Question\Cache\CacheOptionInterface:
+      tags: ['app.question.cache.option']
+
+    App\Question\TestFramework\TestFrameworkOptionInterface:
+      tags: ['app.question.test_framework.option']
+
+    App\Config\InitialConfigInterface:
+      tags: ['app.config.initial']
+
+    App\Config\FinishConfigInterface:
+      tags: ['app.config.finish']
+
+    App\Question\QuestionInterface:
+      tags: ['app.question']
+
+    App\Generator\GeneratorInterface:
+      tags: ['app.generator']
+
+  App\Question\Framework\FrameworkQuestion:
+    arguments: [!tagged app.question.framework.option]
+
+  App\Question\Database\DatabaseQuestion:
+    arguments: [!tagged app.question.database.option]
+
+  App\Question\Cache\CacheQuestion:
+    arguments: [!tagged app.question.cache.option]
+
+  App\Question\TestFramework\TestFrameworkQuestion:
+    arguments: [!tagged app.question.test_framework.option]
+
+  App\Question\QuestionProvider:
+    arguments: [!tagged app.question]
+
+  App\Generator\GeneratorProvider:
+    arguments: [!tagged app.generator]
+
+  App\Config\DefaultConfigCollection-initial:
+    class: App\Config\DefaultConfigCollection
+    arguments: [!tagged app.config.initial]
+
+  App\Config\DefaultConfigCollection-finish:
+    class: App\Config\DefaultConfigCollection
+    arguments: [!tagged app.config.finish]

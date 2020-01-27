@@ -1,0 +1,8 @@
+
+    database:
+        image: mariadb:10.4.11-bionic
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MARIA_ROOT_PASSWORD:-dbrootpass}
+            MYSQL_USER: ${MARIA_USER:-dbuser}
+            MYSQL_PASSWORD: ${MARIA_PASSWORD:-dbpass}
+            MYSQL_DATABASE: ${MARIA_DATABASE:-dbname}

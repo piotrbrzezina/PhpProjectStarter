@@ -1,0 +1,8 @@
+
+    database:
+        image: postgres:9.4.25
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-dbuser}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dbpass}
+            POSTGRES_DB: ${POSTGRES_DB:-dbname}
+            

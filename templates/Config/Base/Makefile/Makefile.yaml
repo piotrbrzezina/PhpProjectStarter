@@ -1,0 +1,21 @@
+#!/usr/bin/env make
+
+-include .env
+export
+
+default: bash
+
+setup:
+	docker-compose up --force-recreate --always-recreate-deps -d --remove-orphans
+
+start:
+	docker-compose start
+
+stop:
+	docker-compose down
+
+logs:
+	docker-compose logs --timestamps --tail 25 --follow
+
+bash:
+	docker-compose exec php sh
