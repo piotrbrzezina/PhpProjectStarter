@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ProjectName;
+namespace App\Question\ProjectName;
 
 use App\Config\ProjectName\ProjectNameConfig;
 use App\Console\ConsoleStyle;

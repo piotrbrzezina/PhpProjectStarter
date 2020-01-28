@@ -1,12 +1,11 @@
-version: "3.1"
+version: "3.7"
 services:
   app:
-
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+      target: app
     command:  sh -c " lsof +D ./project; rm -Rf ./project ; ./bin/console project:generate"
-    #      command: ./bin/console project:generate -vvv
     working_dir: /opt/app
     volumes:
       - ./:/opt/app

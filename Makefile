@@ -20,3 +20,4 @@ phpmd:
 phpstan:
 	@echo "Analyzing (phpstan):"
 	docker-compose run --rm phpqa phpstan analyse -c phpstan.neon -l 7 src
+
