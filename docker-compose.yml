@@ -12,7 +12,7 @@ services:
       - ./project:/opt/app/project
 
   phpqa:
-    image: jakzal/phpqa:1.29.0-php7.4
+    image: szula.aws.tshdev.io/jakzal/phpqa:1.29.0-php7.4
     restart: "no"
     volumes:
       - ./:/project

@@ -1,0 +1,7 @@
+
+    database:
+        image: mongo:4.2.3
+        environment:
+            MONGO_INITDB_DATABASE: ${MONGO_DB:-dbname}
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-dbuser}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-dbpass}

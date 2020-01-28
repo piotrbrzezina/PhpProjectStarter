@@ -31,7 +31,7 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist',  '--no-scripts', 'symfony/website-skeleton', '.'],
+            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', 'symfony/website-skeleton', '.'],
             ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', 'symfony/profiler-pack', 'symfony/debug-bundle'],
         ];
     }
