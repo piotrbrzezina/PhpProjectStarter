@@ -28,8 +28,8 @@ class ProjectNameQuestion implements QuestionInterface
         $this->projectName = new ProjectNameConfig($projectName);
     }
 
-    public function getAnswer(): ?ProjectNameConfig
+    public function getAnswer(): array
     {
-        return $this->projectName;
+        return [$this->projectName];
     }
 }

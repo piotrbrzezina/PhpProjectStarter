@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Question\Database;
 
-use App\Question\QuestionHelper\OneFromMany\QuestionSelectOneFromMany;
+use App\Question\QuestionHelper\QuestionSelectOneFromMany;
 
 class DatabaseQuestion extends QuestionSelectOneFromMany
 {

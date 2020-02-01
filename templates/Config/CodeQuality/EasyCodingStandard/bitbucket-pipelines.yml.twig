@@ -1,0 +1,11 @@
+
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Easy Coding Standards
+              script:
+                - apk add make
+                - make ecs
+              services:
+                - docker
+              caches:
+                - docker

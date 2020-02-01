@@ -11,7 +11,7 @@ interface QuestionInterface
     public function askQuestion(ConsoleStyle $io): void;
 
     /**
-     * @return mixed
+     * @return mixed[]
      */
-    public function getAnswer();
+    public function getAnswer(): array;
 }

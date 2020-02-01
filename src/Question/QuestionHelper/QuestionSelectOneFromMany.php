@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Question\QuestionHelper\OneFromMany;
+namespace App\Question\QuestionHelper;
 
 use App\Console\ConsoleStyle;
 use App\Question\AdditionalQuestionProviderInterface;
@@ -40,7 +40,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
         $selectedValue = null;
         while (null === $selectedValue) {
-            $question = new Question($this->getQuestion().' (enter <comment>?</comment> to see all types)', $this->getDefaultOptionName());
+            $question = new Question($this->getQuestion() . ' (enter <comment>?</comment> to see all types)', $this->getDefaultOptionName());
             $question->setAutocompleterValues($this->getAvailableOptions());
             $selectedValue = $io->askQuestion($question);
 
@@ -57,15 +57,22 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
                 $selectedValue = null;
             }
         }
-        $this->selectedOption = $this->getConfig((string) $selectedValue);
+        $this->selectedOption = $this->getOption((string)$selectedValue);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAnswer()
+    public function getAnswer(): array
     {
-        return $this->selectedOption->getConfig();
+        $config = [];
+
+        $selectedConfig = $this->selectedOption->getConfig();
+        if ($selectedConfig !== null) {
+            $config[] = $selectedConfig;
+        }
+
+        return $config;
     }
 
     public function getAdditionalQuestions(): array
@@ -79,7 +86,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
     abstract protected function getQuestion(): string;
 
-    private function getConfig(string $name): QuestionOptionInterface
+    private function getOption(string $name): QuestionOptionInterface
     {
         if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -103,9 +110,9 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
     private function getDefaultOptionName(): ?string
     {
-        foreach ($this->options as $configurator) {
-            if ($configurator->isDefault()) {
-                return $configurator->getName();
+        foreach ($this->options as $option) {
+            if ($option->isDefault()) {
+                return $option->getName();
             }
         }
 
@@ -114,7 +121,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
     /**
      * @param ConsoleStyle $io
-     * @param string[]     $getAvailableOptions
+     * @param string[] $getAvailableOptions
      */
     private function printAvailableTypes(ConsoleStyle $io, array $getAvailableOptions): void
     {

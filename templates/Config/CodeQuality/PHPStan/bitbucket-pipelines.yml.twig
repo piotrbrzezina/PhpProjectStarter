@@ -1,0 +1,12 @@
+
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Phpstan
+              script:
+                - ls -a
+                - apk add make
+                - make phpstan
+              services:
+                - docker
+              caches:
+                - docker

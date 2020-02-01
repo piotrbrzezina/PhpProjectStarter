@@ -54,3 +54,10 @@ pipelines:
           trigger: manual
           script:
             - ls -a
+
+  tags:
+    release-*:
+      - step:
+          name: Rebuild and release
+          script:
+            - echo $BITBUCKET_TAG

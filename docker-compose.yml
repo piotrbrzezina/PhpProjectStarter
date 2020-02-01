@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
       target: app
-    command:  sh -c " lsof +D ./project; rm -Rf ./project ; ./bin/console project:generate"
+    command:  sh -c " lsof +D ./project; rm -Rf ./project ; ./bin/console project:generate -vvv"
     working_dir: /opt/app
     volumes:
       - ./:/opt/app

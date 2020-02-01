@@ -1,0 +1,11 @@
+
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Php mess detector
+              script:
+                - apk add make
+                - make phpmd
+              services:
+                - docker
+              caches:
+                - docker

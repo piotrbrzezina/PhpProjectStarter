@@ -6,9 +6,9 @@ namespace App\Question\UploadFileSize;
 
 use App\Config\UploadFileSize\UploadFileSizeConfig;
 use App\Console\ConsoleStyle;
-use App\Question\AdditionalQuestionInterface;
+use App\Question\QuestionInterface;
 
-class UploadFileSizeQuestion implements AdditionalQuestionInterface
+class UploadFileSizeQuestion implements QuestionInterface
 {
     private UploadFileSizeConfig $uploadFileSize;
 
@@ -40,8 +40,8 @@ class UploadFileSizeQuestion implements AdditionalQuestionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAnswer()
+    public function getAnswer(): array
     {
-        return $this->uploadFileSize;
+        return [$this->uploadFileSize];
     }
 }

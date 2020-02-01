@@ -7,7 +7,7 @@ namespace App\Question;
 interface AdditionalQuestionProviderInterface
 {
     /**
-     * @return AdditionalQuestionInterface[]
+     * @return QuestionInterface[]
      */
     public function getAdditionalQuestions(): array;
 }

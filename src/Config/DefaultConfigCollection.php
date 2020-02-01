@@ -28,8 +28,6 @@ class DefaultConfigCollection
 
     public function addConfigsToCollection(ConfigCollection $configCollection): void
     {
-        foreach ($this->configs as $config) {
-            $configCollection->add($config);
-        }
+        $configCollection->add($this->configs);
     }
 }

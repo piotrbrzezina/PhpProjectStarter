@@ -8,7 +8,6 @@ use App\Config\ConfigCollection;
 use App\Config\DefaultConfigCollection;
 use App\Console\ConsoleStyle;
 use App\Generator\GeneratorProvider;
-use App\Question\AdditionalQuestionInterface;
 use App\Question\AdditionalQuestionProviderInterface;
 use App\Question\QuestionInterface;
 use App\Question\QuestionProvider;
@@ -89,7 +88,7 @@ class GenerateProject extends Command
      */
     protected function askQuestion($question): void
     {
-        if ($question instanceof QuestionInterface || $question instanceof AdditionalQuestionInterface) {
+        if ($question instanceof QuestionInterface) {
             $question->askQuestion($this->io);
             if (null !== $question->getAnswer()) {
                 $this->configCollection->add($question->getAnswer());

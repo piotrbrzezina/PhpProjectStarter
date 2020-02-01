@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Question\QuestionHelper\OneFromMany;
+namespace App\Question\QuestionHelper;
 
 interface QuestionOptionInterface
 {

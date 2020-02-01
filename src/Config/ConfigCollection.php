@@ -23,25 +23,26 @@ final class ConfigCollection
     }
 
     /**
-     * @param object $config
+     * @param object[] $configs
      */
-    public function add($config): void
+    public function add(array $configs): void
     {
         $interfaces = [];
-
-        try {
-            $reflection = new ReflectionClass($config);
-            $interfaces = $reflection->getInterfaceNames();
-        } catch (ReflectionException $e) {
-            $this->logger->debug($e->getMessage());
-        }
-        $interfaces[] = get_class($config);
-
-        foreach ($interfaces as $interface) {
-            if (!array_key_exists($interface, $this->configs)) {
-                $this->configs[$interface] = [];
+        foreach($configs as $config) {
+            try {
+                $reflection = new ReflectionClass($config);
+                $interfaces = $reflection->getInterfaceNames();
+            } catch (ReflectionException $e) {
+                $this->logger->debug($e->getMessage());
             }
-            $this->configs[$interface][] = $config;
+            $interfaces[] = get_class($config);
+
+            foreach ($interfaces as $interface) {
+                if (!array_key_exists($interface, $this->configs)) {
+                    $this->configs[$interface] = [];
+                }
+                $this->configs[$interface][] = $config;
+            }
         }
     }
 
