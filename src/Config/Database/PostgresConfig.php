@@ -6,10 +6,11 @@ namespace App\Config\Database;
 
 use App\Config\ConfigCollection;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
+use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class PostgresConfig implements DockerComposeConfigInterface
+class PostgresConfig implements DockerComposeConfigInterface, PhpExtensionsConfigInterface
 {
     private Twig $twig;
 
@@ -27,6 +28,29 @@ class PostgresConfig implements DockerComposeConfigInterface
      */
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Database/Postgres/docker-compose.yaml.twig');
+        return $this->twig->render('Config/Database/Postgres/docker-compose.yaml.twig', $this->getConnectionData());
+    }
+
+    public function getConnectionData(): array
+    {
+        return
+            [
+                'host' => 'database',
+                'port' => '5432',
+                'version' => '11',
+                'user' => 'dbuser',
+                'password' => 'dbpass',
+                'databaseName' => 'dbname',
+            ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPhpExtensions(ConfigCollection $configCollection): array
+    {
+        return [
+            'pdo_pgsql',
+        ];
     }
 }

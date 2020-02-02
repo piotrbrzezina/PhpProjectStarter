@@ -8,7 +8,7 @@ use App\Config\ConfigCollection;
 use App\Config\ProjectName\ProjectConfig;
 use App\Generator\GeneratorInterface;
 use App\Generator\PhpIni\PhpIniConfigInterface;
-use App\Generator\ProjectName\ProjectNameHelper;
+use App\Generator\ProjectName\ProjectHelper;
 use Closure;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +28,7 @@ class ComposerAutoloadNameSpaceFixer implements GeneratorInterface
 
     public function generate(ConfigCollection $configCollection, OutputInterface $output): void
     {
-        $projectConfig = ProjectNameHelper::getProjectName($configCollection);
+        $projectConfig = ProjectHelper::getProject($configCollection);
         if ($projectConfig instanceof ProjectConfig) {
             $debugFormatter = new DebugFormatterHelper();
             $output->write('', true);

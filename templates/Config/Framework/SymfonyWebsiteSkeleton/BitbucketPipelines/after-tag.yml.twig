@@ -1,0 +1,23 @@
+      - step:
+            name: build image
+            trigger: manual
+            script:
+                - ls -a
+      - step:
+            name: deploy to test
+            deployment: test
+            trigger: manual
+            script:
+                - ls -a
+      - step:
+            name: deploy to uat
+            deployment: test
+            trigger: manual
+            script:
+                - ls -a
+      - step:
+            name: deploy to staging
+            deployment: staging
+            trigger: manual
+            script:
+                - ls -a

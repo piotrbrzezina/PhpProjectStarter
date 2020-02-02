@@ -1,0 +1,98 @@
+<?php
+
+
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Symfony2Extension\Context\KernelDictionary;
+use PHPUnit_Framework_Assert as Assertions;
+use Coduo\PHPMatcher\Factory\SimpleFactory;
+
+/**
+ * Defines application features from the specific contexbit.
+ */
+class RestContext extends RawMinkContext
+{
+    use KernelDictionary;
+
+    private $defaultHeaders = [
+        'HTTP_ACCEPT' => 'application/ld+json',
+        'CONTENT_TYPE' => 'application/ld+json',
+    ];
+
+    /**
+     * @When I send a :method request to :path
+     */
+    public function iSendAGetRequestTo($method, $path)
+    {
+        $this->sendRequest($method, $path);
+    }
+
+    /**
+     * @Given /^I send a "([^"]*)" request with authorization token "([^"]*)" to "([^"]*)"$/
+     */
+    public function iSendARequestWithAuthorizationTokenTo($method, $token, $path)
+    {
+        $this->sendRequest($method, $path, '{}', array_merge(['HTTP_AUTHORIZATION' => 'Bearer ' . $token], $this->defaultHeaders));
+    }
+
+    /**
+     * @When I send a :method request to :path with body:
+     */
+    public function iSendARequestToWithBody($method, $path, PyStringNode $body)
+    {
+        $this->sendRequest($method, $path, $body->getRaw());
+    }
+
+    /**
+     * @Given /^I send a "([^"]*)" request with authorization token "([^"]*)" to "([^"]*)" with body:$/
+     */
+    public function iSendARequestWithAuthorizationTokenToWithBody($method, $token, $path, PyStringNode $body)
+    {
+        $this->sendRequest($method, $path, $body->getRaw(), array_merge(['HTTP_AUTHORIZATION' => 'Bearer ' . $token], $this->defaultHeaders));
+    }
+
+    /**
+     * @Then the response code should be :code
+     */
+    public function theResponseCodeShouldBe($code)
+    {
+        $expected = intval($code);
+        $actual = intval($this->getSession()->getStatusCode());
+        Assertions::assertSame($expected, $actual);
+    }
+
+    /**
+     * @Then the response should contain json:
+     */
+    public function theResponseShouldContainJson(PyStringNode $jsonString)
+    {
+        $factory = new SimpleFactory();
+        $matcher = $factory->createMatcher();
+
+        if (!$matcher->match($this->getSession()->getPage()->getContent(), $jsonString->getRaw())) {
+            throw new \RuntimeException($matcher->getError());
+        }
+    }
+
+    /**
+     * @param $method
+     * @param $path
+     * @param $body
+     * @param $headers
+     */
+    private function sendRequest($method, $path, $body = '{}', $headers = [])
+    {
+        if (empty($headers)) {
+            $headers = $this->defaultHeaders;
+        }
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof BrowserKitDriver) {
+            $driver->getClient()->request($method, $path, json_decode($body, true), [], $headers, $body);
+        } else {
+            throw new \RuntimeException('Unsupported driver. BrowserKit driver is required.');
+        }
+    }
+
+
+}

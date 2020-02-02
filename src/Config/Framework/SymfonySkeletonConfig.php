@@ -11,7 +11,7 @@ use App\Generator\NginxConfig\NginxConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsHelper;
 use App\Generator\PhpIni\PhpIniConfigInterface;
-use App\Generator\ProjectName\ProjectNameHelper;
+use App\Generator\ProjectName\ProjectHelper;
 use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
@@ -53,7 +53,7 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
         $phpExtensions = PhpExtensionsHelper::getPhpExtensions($configCollection);
 
         return $this->twig->render(
-            'Config/Framework/SymfonyWebsiteSkeleton/Dockerfile.twig',
+            'Config/Framework/SymfonySkeleton/Dockerfile.twig',
             compact('phpExtensions')
         );
     }
@@ -69,12 +69,12 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
     {
         $projectName = 'defaultProjectName';
 
-        if ($configurator = ProjectNameHelper::getProjectName($configCollection)) {
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
         }
 
         return $this->twig->render(
-            'Config/Framework/SymfonyWebsiteSkeleton/docker-compose.yaml.twig',
+            'Config/Framework/SymfonySkeleton/docker-compose.yaml.twig',
             compact('projectName')
         );
     }
@@ -94,7 +94,7 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
         }
 
         return $this->twig->render(
-            'Config/Framework/SymfonyWebsiteSkeleton/nginx.conf.twig',
+            'Config/Framework/SymfonySkeleton/nginx.conf.twig',
             compact('clientMaxBodySize')
         );
     }
@@ -116,8 +116,13 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
         }
 
         return $this->twig->render(
-            'Config/Framework/SymfonyWebsiteSkeleton/php.ini.twig',
+            'Config/Framework/SymfonySkeleton/php.ini.twig',
             compact('clientMaxBodySize', 'uploadMaxFileSize')
         );
+    }
+
+    public function getMakefileContent(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonySkeleton/Makefile.twig');
     }
 }

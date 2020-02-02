@@ -6,7 +6,7 @@ export
 default: bash
 
 setup:
-	docker-compose up --force-recreate --always-recreate-deps -d --remove-orphans
+	docker-compose up --force-recreate --always-recreate-deps -d --remove-orphans --build
 
 start:
 	docker-compose start
@@ -16,6 +16,3 @@ stop:
 
 logs:
 	docker-compose logs --timestamps --tail 25 --follow
-
-bash:
-	docker-compose exec php sh

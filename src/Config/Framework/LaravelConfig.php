@@ -65,6 +65,11 @@ final class LaravelConfig implements PhpExtensionsConfigInterface, DockerfileBui
      */
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/docker-compose.yaml.twig');
+        return $this->twig->render('Config/Framework/Laravel/docker-compose.yaml.twig');
+    }
+
+    public function getMakefileContent(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/Laravel/Makefile.twig');
     }
 }

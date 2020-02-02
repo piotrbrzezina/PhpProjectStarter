@@ -6,9 +6,9 @@ namespace App\Generator\ProjectName;
 
 use App\Config\ConfigCollection;
 
-class ProjectNameHelper
+class ProjectHelper
 {
-    public static function getProjectName(ConfigCollection $configCollection): ?ProjectInterface
+    public static function getProject(ConfigCollection $configCollection): ?ProjectInterface
     {
         $configs = $configCollection->get(ProjectInterface::class);
         if (empty($configs)) {
@@ -22,4 +22,5 @@ class ProjectNameHelper
 
         return $projectName;
     }
+
 }

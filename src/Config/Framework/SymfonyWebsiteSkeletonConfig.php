@@ -7,17 +7,25 @@ namespace App\Config\Framework;
 use App\Config\ConfigCollection;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
+use App\Generator\Makefile\MakefileConfigInterface;
 use App\Generator\NginxConfig\NginxConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsHelper;
 use App\Generator\PhpIni\PhpIniConfigInterface;
-use App\Generator\ProjectName\ProjectNameHelper;
+use App\Generator\ProjectName\ProjectHelper;
 use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, NginxConfigInterface, PhpIniConfigInterface
+final class SymfonyWebsiteSkeletonConfig implements
+    ShelCommandConfigInterface,
+    PhpExtensionsConfigInterface,
+    DockerfileBuildStepsConfigInterface,
+    DockerComposeConfigInterface,
+    NginxConfigInterface,
+    PhpIniConfigInterface,
+    MakefileConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -70,7 +78,7 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
 
-        if ($configurator = ProjectNameHelper::getProjectName($configCollection)) {
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
             $clientName = $configurator->getClientName();
         }
@@ -121,5 +129,10 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
             'Config/Framework/SymfonyWebsiteSkeleton/php.ini.twig',
             compact('clientMaxBodySize', 'uploadMaxFileSize')
         );
+    }
+
+    public function getMakefileContent(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Makefile.twig');
     }
 }
