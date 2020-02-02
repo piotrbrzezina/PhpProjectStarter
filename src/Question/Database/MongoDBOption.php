@@ -22,7 +22,7 @@ class MongoDBOption implements DatabaseOptionInterface
 
     public function isDefault(): bool
     {
-        return true;
+        return false;
     }
 
     public function getConfig(): PostgresConfig

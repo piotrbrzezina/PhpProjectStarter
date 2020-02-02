@@ -38,6 +38,7 @@ class DockerfileGenerator implements GeneratorInterface
             mkdir($this->projectPath.'/docker');
         }
         file_put_contents($this->projectPath.'/docker/Dockerfile', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/.dockerignore', file_get_contents('templates/Config/Docker/.dockerignore'));
 
         $output->write($debugFormatter->stop(self::class, 'Generate Dockerfile finished', true));
     }

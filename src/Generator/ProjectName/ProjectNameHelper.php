@@ -8,15 +8,15 @@ use App\Config\ConfigCollection;
 
 class ProjectNameHelper
 {
-    public static function getProjectName(ConfigCollection $configCollection): ?ProjectNameInterface
+    public static function getProjectName(ConfigCollection $configCollection): ?ProjectInterface
     {
-        $configs = $configCollection->get(ProjectNameInterface::class);
+        $configs = $configCollection->get(ProjectInterface::class);
         if (empty($configs)) {
             return null;
         }
 
         $projectName = array_pop($configs);
-        if (!$projectName instanceof ProjectNameInterface) {
+        if (!$projectName instanceof ProjectInterface) {
             return null;
         }
 

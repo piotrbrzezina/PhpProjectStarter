@@ -6,13 +6,12 @@ namespace App\Config\CodeQuality;
 
 use App\Config\ConfigCollection;
 use App\Config\FinishConfigInterface;
-use App\Generator\BitbucketPipelines\BitbucketPipelinesConfigInterface;
+use App\Generator\BitbucketPipelines\BitbucketPipelinesCodeQualityConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use Twig\Environment as Twig;
 
-class CodeQualityConfig implements DockerComposeConfigInterface, FinishConfigInterface, BitbucketPipelinesConfigInterface
+class CodeQualityCodeQualityConfig implements DockerComposeConfigInterface, FinishConfigInterface, BitbucketPipelinesCodeQualityConfigInterface
 {
-
     private Twig $twig;
     private EasyCodingStandardConfig $ecs;
     private PHPMessDetector $phpmd;

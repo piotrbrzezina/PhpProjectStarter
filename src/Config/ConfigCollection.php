@@ -28,7 +28,7 @@ final class ConfigCollection
     public function add(array $configs): void
     {
         $interfaces = [];
-        foreach($configs as $config) {
+        foreach ($configs as $config) {
             try {
                 $reflection = new ReflectionClass($config);
                 $interfaces = $reflection->getInterfaceNames();

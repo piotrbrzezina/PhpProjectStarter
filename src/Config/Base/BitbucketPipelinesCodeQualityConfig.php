@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Config\Base;
 
-
 use App\Config\ConfigCollection;
 use App\Config\InitialConfigInterface;
-use App\Generator\BitbucketPipelines\BitbucketPipelinesConfigInterface;
+use App\Generator\BitbucketPipelines\BitbucketPipelinesCodeQualityConfigInterface;
 use Twig\Environment as Twig;
 
-class BitbucketPipelinesConfig implements BitbucketPipelinesConfigInterface, InitialConfigInterface
+class BitbucketPipelinesCodeQualityConfig implements BitbucketPipelinesCodeQualityConfigInterface, InitialConfigInterface
 {
     private Twig $twig;
 

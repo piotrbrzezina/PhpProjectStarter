@@ -68,14 +68,16 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
 
         if ($configurator = ProjectNameHelper::getProjectName($configCollection)) {
             $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
         }
 
         return $this->twig->render(
             'Config/Framework/SymfonyWebsiteSkeleton/docker-compose.yaml.twig',
-            compact('projectName')
+            compact('projectName', 'clientName')
         );
     }
 

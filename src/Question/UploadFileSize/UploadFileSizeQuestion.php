@@ -6,9 +6,9 @@ namespace App\Question\UploadFileSize;
 
 use App\Config\UploadFileSize\UploadFileSizeConfig;
 use App\Console\ConsoleStyle;
-use App\Question\QuestionInterface;
+use App\Question\AdditionalQuestionInterface;
 
-class UploadFileSizeQuestion implements QuestionInterface
+class UploadFileSizeQuestion implements AdditionalQuestionInterface
 {
     private UploadFileSizeConfig $uploadFileSize;
 

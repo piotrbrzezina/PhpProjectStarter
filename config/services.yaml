@@ -27,6 +27,10 @@ services:
     tags:
       - { name: app.generator, priority: 100 }
 
+  App\Generator\Composer\ComposerAutoloadNameSpaceFixer:
+    tags:
+      - { name: app.generator, priority: -100 }
+
   _instanceof:
     # services whose classes are instances of CustomInterface will be tagged automatically
     App\Question\Framework\FrameworkOptionInterface:

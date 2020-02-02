@@ -43,17 +43,17 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
 
         $selectedValue = null;
         while (true) {
-            if (count($this->selectedOptions) === 0) {
-                $question = new Question($this->getQuestion() . ' (enter <comment>?</comment> to see all types, leave it <comment>blank</comment> to exit)', $this->getDefaultOptionsName());
+            if (0 === count($this->selectedOptions)) {
+                $question = new Question($this->getQuestion().' (enter <comment>?</comment> to see all types, leave it <comment>blank</comment> to exit)', $this->getDefaultOptionsName());
             } else {
-                $question = new Question($this->getQuestion() . ' (enter <comment>?</comment> to see all types, leave it <comment>blank</comment> to exit)');
-
+                $question = new Question($this->getQuestion().' (enter <comment>?</comment> to see all types, leave it <comment>blank</comment> to exit)');
             }
             $question->setAutocompleterValues($this->getAvailableOptions());
             $selectedValue = $io->askQuestion($question);
 
             if ($this->getDefaultOptionsName() === $selectedValue) {
                 $this->selectedOptions = $this->getDefaultOptions();
+
                 break;
             } elseif ('' === $selectedValue) {
                 break;
@@ -69,11 +69,10 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
 
                 $selectedValue = null;
             } else {
-                $this->selectedOptions[] = $this->getConfig((string)$selectedValue);
+                $this->selectedOptions[] = $this->getConfig((string) $selectedValue);
                 $selectedValue = null;
             }
         }
-
     }
 
     /**
@@ -84,7 +83,7 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
         $configs = [];
         foreach ($this->selectedOptions as $option) {
             $selectedConfig = $option->getConfig();
-            if ($selectedConfig !== null) {
+            if (null !== $selectedConfig) {
                 $configs[] = $selectedConfig;
             }
         }
@@ -94,11 +93,14 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
 
     public function getAdditionalQuestions(): array
     {
-        if ($this->selectedOptions instanceof AdditionalQuestionProviderInterface) {
-            return $this->selectedOptions->getAdditionalQuestions();
+        $additionalQuestions = [];
+        foreach ($this->selectedOptions as $selectedOption) {
+            if ($selectedOption instanceof AdditionalQuestionProviderInterface) {
+                $additionalQuestions = array_merge($additionalQuestions, $selectedOption->getAdditionalQuestions());
+            }
         }
 
-        return [];
+        return $additionalQuestions;
     }
 
     abstract protected function getQuestion(): string;
@@ -125,19 +127,19 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
         return $options;
     }
 
-    private function getDefaultOptionsName(): ?string
+    private function getDefaultOptionsName(): string
     {
         $names = [];
         foreach ($this->getDefaultOptions() as $option) {
             $names[] = $option->getName();
         }
 
-        return join(", ", $names);
+        return join(', ', $names);
     }
 
     /**
      * @param ConsoleStyle $io
-     * @param string[] $getAvailableOptions
+     * @param string[]     $getAvailableOptions
      */
     private function printAvailableTypes(ConsoleStyle $io, array $getAvailableOptions): void
     {
@@ -146,6 +148,9 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
         }
     }
 
+    /**
+     * @return QuestionOptionInterface[]
+     */
     private function getDefaultOptions(): array
     {
         $defaultOptions = [];

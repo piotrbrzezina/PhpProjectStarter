@@ -6,16 +6,12 @@ namespace App\Config\CodeQuality;
 
 use App\Config\ConfigCollection;
 use App\Config\FinishConfigInterface;
-use App\Generator\BitbucketPipelines\BitbucketPipelinesConfigInterface;
 use App\Generator\CodeQuality\EasyCodingStandardConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class EasyCodingStandardConfig implements
-    EasyCodingStandardConfigInterface,
-    MakefileConfigInterface,
-    FinishConfigInterface
+class EasyCodingStandardConfig implements EasyCodingStandardConfigInterface, MakefileConfigInterface, FinishConfigInterface
 {
     private Twig $twig;
 

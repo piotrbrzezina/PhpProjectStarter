@@ -21,8 +21,9 @@ class MongoDBConfig implements DockerComposeConfigInterface, PhpExtensionsConfig
 
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {
-        return ['mongo'];
+        return ['mongodb'];
     }
+
     /**
      * @param ConfigCollection $configCollection
      *

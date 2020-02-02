@@ -6,7 +6,6 @@ namespace App\Config\CodeQuality;
 
 use App\Config\ConfigCollection;
 use App\Config\FinishConfigInterface;
-use App\Generator\BitbucketPipelines\BitbucketPipelinesConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
 use Twig\Environment as Twig;
 

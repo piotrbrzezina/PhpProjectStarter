@@ -1,0 +1,11 @@
+.git
+.DS_Store
+.gitignore
+bitbucket-pipelines.yml
+docker-compose.yml
+Makefile
+phpstan.neon
+ecs.yaml
+/var/*
+/vendor/*
+/project/*

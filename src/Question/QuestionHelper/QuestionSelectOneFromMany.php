@@ -40,7 +40,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
         $selectedValue = null;
         while (null === $selectedValue) {
-            $question = new Question($this->getQuestion() . ' (enter <comment>?</comment> to see all types)', $this->getDefaultOptionName());
+            $question = new Question($this->getQuestion().' (enter <comment>?</comment> to see all types)', $this->getDefaultOptionName());
             $question->setAutocompleterValues($this->getAvailableOptions());
             $selectedValue = $io->askQuestion($question);
 
@@ -57,7 +57,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
                 $selectedValue = null;
             }
         }
-        $this->selectedOption = $this->getOption((string)$selectedValue);
+        $this->selectedOption = $this->getOption((string) $selectedValue);
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
         $config = [];
 
         $selectedConfig = $this->selectedOption->getConfig();
-        if ($selectedConfig !== null) {
+        if (null !== $selectedConfig) {
             $config[] = $selectedConfig;
         }
 
@@ -121,7 +121,7 @@ abstract class QuestionSelectOneFromMany implements QuestionInterface, Additiona
 
     /**
      * @param ConsoleStyle $io
-     * @param string[] $getAvailableOptions
+     * @param string[]     $getAvailableOptions
      */
     private function printAvailableTypes(ConsoleStyle $io, array $getAvailableOptions): void
     {

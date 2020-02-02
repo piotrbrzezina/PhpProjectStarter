@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Question\Database;
 
-use App\Config\Database\MariaDBConfig;
+use App\Config\Database\MongoDBConfig;
 
 class MariaDBOption implements DatabaseOptionInterface
 {
-    private MariaDBConfig $config;
+    private MongoDBConfig $config;
 
-    public function __construct(MariaDBConfig $config)
+    public function __construct(MongoDBConfig $config)
     {
         $this->config = $config;
     }
@@ -25,7 +25,7 @@ class MariaDBOption implements DatabaseOptionInterface
         return false;
     }
 
-    public function getConfig(): MariaDBConfig
+    public function getConfig(): MongoDBConfig
     {
         return $this->config;
     }
