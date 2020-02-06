@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace App\Config\Framework;
 
 use App\Config\ConfigCollection;
+use App\Config\ProjectName\ProjectConfig;
+use App\Generator\Behat\BehatConfigInterface;
+use App\Generator\Behat\BehatFeatureFile;
+use App\Generator\Behat\BehatFeatureFileInterface;
+use App\Generator\BitbucketPipelines\BitbucketPipelinesPullRequestConfigInterface;
+use App\Generator\BitbucketPipelines\BitbucketPipelinesTagConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
@@ -18,14 +24,7 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonyWebsiteSkeletonConfig implements
-    ShelCommandConfigInterface,
-    PhpExtensionsConfigInterface,
-    DockerfileBuildStepsConfigInterface,
-    DockerComposeConfigInterface,
-    NginxConfigInterface,
-    PhpIniConfigInterface,
-    MakefileConfigInterface
+final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -134,5 +133,55 @@ final class SymfonyWebsiteSkeletonConfig implements
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Makefile.twig');
+    }
+
+    public function getPullRequestsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-pull-request.yml.twig');
+    }
+
+    public function getPullRequestsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/after-pull-request.yml.twig');
+    }
+
+    public function getTagsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-tag.yml.twig');
+    }
+
+    public function getTagsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/after-tag.yml.twig');
+    }
+
+    public function getBehatConfig(ConfigCollection $configCollection): string
+    {
+        $projectConfig = ProjectHelper::getProject($configCollection);
+        if ($projectConfig instanceof ProjectConfig) {
+            return $this->twig->render(
+                'Config/Framework/SymfonyWebsiteSkeleton/Behat/behat.yml.twig',
+                ['projectNameSpace' => $projectConfig->getNameSpace()]
+            );
+        }
+
+        return '';
+    }
+
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return BehatFeatureFileInterface[]
+     *
+     * @throws \Exception
+     */
+    public function getBehatFeatureFile(ConfigCollection $configCollection): array
+    {
+        return [
+            new BehatFeatureFile(
+                'FeatureContext.php',
+                $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Behat/FeatureContext.php.twig')
+            ),
+        ];
     }
 }

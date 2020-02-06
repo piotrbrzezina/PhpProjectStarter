@@ -6,13 +6,14 @@ namespace App\Config\TestFramework;
 
 use App\Config\ConfigCollection;
 use App\Config\ProjectName\ProjectConfig;
+use App\Generator\BitbucketPipelines\BitbucketPipelinesRunTestConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
 use App\Generator\ProjectName\ProjectHelper;
 use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterface
+class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterface, BitbucketPipelinesRunTestConfigInterface
 {
     private string $projectPath;
 
@@ -29,11 +30,6 @@ class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
         return [
             ['composer', 'require', 'phpspec/phpspec', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts'],
         ];
-    }
-
-    public function getMakefileContent(ConfigCollection $configCollection): string
-    {
-        return $this->twig->render('Config/TestFramework/PhpSpec/Makefile.twig');
     }
 
     /**
@@ -54,5 +50,15 @@ class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
         }
 
         return '';
+    }
+
+    public function getMakefileContent(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/TestFramework/PhpSpec/Makefile.twig');
+    }
+
+    public function getTestToRunOnBitbucketPipelines(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/TestFramework/PhpSpec/bitbucket-pipelines.yml.twig');
     }
 }

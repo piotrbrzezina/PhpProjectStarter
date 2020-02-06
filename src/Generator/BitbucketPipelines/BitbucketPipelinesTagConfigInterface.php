@@ -8,5 +8,7 @@ use App\Config\ConfigCollection;
 
 interface BitbucketPipelinesTagConfigInterface
 {
-    public function getTagsBitbucketPipelines(ConfigCollection $configCollection): string;
+    public function getTagsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string;
+
+    public function getTagsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string;
 }

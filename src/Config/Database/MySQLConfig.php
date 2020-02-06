@@ -32,7 +32,7 @@ class MySQLConfig implements DockerComposeConfigInterface, PhpExtensionsConfigIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {

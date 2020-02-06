@@ -8,5 +8,5 @@ use App\Config\ConfigCollection;
 
 interface BitbucketPipelinesRunTestConfigInterface
 {
-    public function getCodeQualityBitbucketPipelines(ConfigCollection $configCollection): string;
+    public function getTestToRunOnBitbucketPipelines(ConfigCollection $configCollection): string;
 }

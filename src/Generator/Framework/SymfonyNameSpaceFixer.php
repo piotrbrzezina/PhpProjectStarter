@@ -61,22 +61,22 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
                 '/src/Kernel.php',
             ];
             foreach ($fileToFix as $pathToFile) {
-                $consoleContent = file_get_contents($this->projectPath . $pathToFile);
+                $consoleContent = file_get_contents($this->projectPath.$pathToFile);
                 if (false !== $consoleContent) {
-                    file_put_contents($this->projectPath . $pathToFile, str_replace(
+                    file_put_contents($this->projectPath.$pathToFile, str_replace(
                         [
                             'App\\\\',
                             'App\\',
                             'namespace App;',
                             'App:',
-                            'alias: App'
+                            'alias: App',
                         ],
                         [
-                            $projectConfig->getNameSpace() . '\\\\',
-                            $projectConfig->getNameSpace() . '\\',
-                            'namespace ' . $projectConfig->getNameSpace() . ';',
-                            $projectConfig->getNameSpace() . ':',
-                            'alias: ' . $projectConfig->getNameSpace()
+                            $projectConfig->getNameSpace().'\\\\',
+                            $projectConfig->getNameSpace().'\\',
+                            'namespace '.$projectConfig->getNameSpace().';',
+                            $projectConfig->getNameSpace().':',
+                            'alias: '.$projectConfig->getNameSpace(),
                         ],
                         $consoleContent
                     ));
@@ -84,11 +84,13 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
             }
 
             if ($configCollection->has(SymfonyWebsiteSkeletonConfig::class)) {
-                if (!file_exists($this->projectPath . '/config/packages/dev')) {
-                    mkdir($this->projectPath . '/config/packages/dev', 0777, true);
+                if (!file_exists($this->projectPath.'/config/packages/dev')) {
+                    mkdir($this->projectPath.'/config/packages/dev', 0777, true);
                 }
-                file_put_contents($this->projectPath . '/config/packages/dev/maker.yaml',
-                    $this->twig->render('Generator/Framework/maker.yaml.twig',
+                file_put_contents(
+                    $this->projectPath.'/config/packages/dev/maker.yaml',
+                    $this->twig->render(
+                        'Generator/Framework/Symfony/maker.yaml.twig',
                         ['projectNamespace' => $projectConfig->getNameSpace()]
                     )
                 );

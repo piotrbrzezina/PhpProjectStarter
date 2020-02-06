@@ -1,0 +1,10 @@
+includes:
+    - /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
+    - /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    excludes_analyse:
+        - /project/vendor
+    autoload_directories:
+        - /project
+    autoload_files:
+        - /project/config/bootstrap.php

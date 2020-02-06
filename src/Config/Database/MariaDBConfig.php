@@ -32,7 +32,7 @@ class MariaDBConfig implements DockerComposeConfigInterface, PhpExtensionsConfig
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {

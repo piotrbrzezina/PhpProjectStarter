@@ -1,1 +1,11 @@
-pipelines:
+
+      - step:
+            image: docker/compose:alpine-1.25.3
+            name: Behat
+            script:
+                - apk add make
+                - make behat
+            services:
+                - docker
+            caches:
+                - docker

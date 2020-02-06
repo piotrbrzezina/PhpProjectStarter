@@ -1,0 +1,16 @@
+default:
+    calls:
+        error_reporting: 16383 # E_ALL & ~E_USER_DREPRECATED
+    suites:
+        default:
+            contexts:
+                - FeatureContext
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                class: {{ projectNameSpace }}\Kernel
+        Behat\MinkExtension:
+            base_url: "http://symfony.dev:8080/"
+            sessions:
+                symfony:
+                    symfony: ~

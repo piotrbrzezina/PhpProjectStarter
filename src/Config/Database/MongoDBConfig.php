@@ -51,5 +51,7 @@ class MongoDBConfig implements DockerComposeConfigInterface, PhpExtensionsConfig
                 ['composer', 'require', '--working-dir', $this->projectPath, '--no-scripts', 'doctrine/mongodb-odm-bundle'],
             ];
         }
+
+        return [];
     }
 }

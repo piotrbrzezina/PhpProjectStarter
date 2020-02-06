@@ -8,5 +8,7 @@ use App\Config\ConfigCollection;
 
 interface BitbucketPipelinesPullRequestConfigInterface
 {
-    public function getPullRequestsBitbucketPipelines(ConfigCollection $configCollection): string;
+    public function getPullRequestsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string;
+
+    public function getPullRequestsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string;
 }

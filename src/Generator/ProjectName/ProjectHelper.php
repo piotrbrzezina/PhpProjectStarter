@@ -22,5 +22,4 @@ class ProjectHelper
 
         return $projectName;
     }
-
 }

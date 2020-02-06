@@ -31,6 +31,9 @@ class PostgresConfig implements DockerComposeConfigInterface, PhpExtensionsConfi
         return $this->twig->render('Config/Database/Postgres/docker-compose.yaml.twig', $this->getConnectionData());
     }
 
+    /**
+     * @return string[]
+     */
     public function getConnectionData(): array
     {
         return
@@ -45,7 +48,7 @@ class PostgresConfig implements DockerComposeConfigInterface, PhpExtensionsConfi
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {
