@@ -40,7 +40,6 @@ class DockerComposeGenerator implements GeneratorInterface
         }
         file_put_contents($this->projectPath.'/docker-compose.yaml', implode(PHP_EOL, array_filter($config)));
 
-
         $config = [];
         /** @var DockerComposeCiConfigInterface $configurator */
         foreach ($configCollection->get(DockerComposeCiConfigInterface::class) as $configurator) {
@@ -52,7 +51,6 @@ class DockerComposeGenerator implements GeneratorInterface
             mkdir($this->projectPath.'/docker');
         }
         file_put_contents($this->projectPath.'/docker/docker-compose-ci.yaml', implode(PHP_EOL, array_filter($config)));
-
 
         $output->write($debugFormatter->stop(self::class, 'Generate docker-compose.yaml finished', true));
     }

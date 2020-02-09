@@ -14,7 +14,7 @@ use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class MongoDBConfig implements DockerComposeConfigInterface,DockerComposeCiConfigInterface, PhpExtensionsConfigInterface, ShelCommandConfigInterface
+class MongoDBConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface, ShelCommandConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -44,7 +44,9 @@ class MongoDBConfig implements DockerComposeConfigInterface,DockerComposeCiConfi
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

@@ -39,7 +39,9 @@ class MemcachedConfig implements PhpExtensionsConfigInterface, DockerComposeCiCo
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

@@ -11,7 +11,7 @@ use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class MariaDBConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface,PhpExtensionsConfigInterface
+class MariaDBConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface
 {
     private Twig $twig;
 
@@ -34,7 +34,9 @@ class MariaDBConfig implements DockerComposeConfigInterface, DockerComposeCiConf
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

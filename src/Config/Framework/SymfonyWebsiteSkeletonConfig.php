@@ -25,18 +25,7 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonyWebsiteSkeletonConfig implements
-    ShelCommandConfigInterface,
-    PhpExtensionsConfigInterface,
-    DockerfileBuildStepsConfigInterface,
-    DockerComposeConfigInterface,
-    DockerComposeCiConfigInterface,
-    NginxConfigInterface,
-    PhpIniConfigInterface,
-    MakefileConfigInterface,
-    BitbucketPipelinesPullRequestConfigInterface,
-    BitbucketPipelinesTagConfigInterface,
-    BehatConfigInterface
+final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -186,7 +175,6 @@ final class SymfonyWebsiteSkeletonConfig implements
             'Config/Framework/SymfonyWebsiteSkeleton/Makefile.twig',
             compact('projectName', 'clientName')
         );
-
     }
 
     /**

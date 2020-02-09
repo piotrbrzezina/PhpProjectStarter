@@ -23,7 +23,7 @@ class ProjectNameQuestion implements QuestionInterface
                 );
             }
 
-            if(!preg_match('/^[a-zA-Z]+$/i',trim($answer))){
+            if (!preg_match('/^[a-zA-Z]+$/i', trim($answer))) {
                 throw new RuntimeException(
                     'The name should contains only letters a-z A-Z'
                 );
@@ -39,7 +39,7 @@ class ProjectNameQuestion implements QuestionInterface
                 );
             }
 
-            if(!preg_match('/^[a-zA-Z]+$/i',trim($answer))){
+            if (!preg_match('/^[a-zA-Z]+$/i', trim($answer))) {
                 throw new RuntimeException(
                     'The name should contains only letters a-z A-Z'
                 );

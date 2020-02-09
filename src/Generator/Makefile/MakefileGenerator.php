@@ -34,7 +34,7 @@ class MakefileGenerator implements GeneratorInterface
             $config[] = $configurator->getMakefileContent($configCollection);
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
         }
-        /** @var MakefileSetupProjectConfigInterface  $configurator */
+        /** @var MakefileSetupProjectConfigInterface $configurator */
         foreach ($configCollection->get(MakefileSetupProjectConfigInterface::class) as $configurator) {
             $config[] = $configurator->getSetupProjectStep($configCollection);
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));

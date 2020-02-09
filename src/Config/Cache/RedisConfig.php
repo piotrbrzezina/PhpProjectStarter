@@ -39,7 +39,9 @@ class RedisConfig implements PhpExtensionsConfigInterface, DockerComposeCiConfig
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

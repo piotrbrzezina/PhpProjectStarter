@@ -45,7 +45,7 @@ class ComposerAutoloadNameSpaceFixer implements GeneratorInterface
             file_put_contents($this->projectPath.'/composer.json', str_replace(
                 [
                     '"App\\\\"',
-                    '"App\\\\Tests\\\\"'
+                    '"App\\\\Tests\\\\"',
                 ],
                 [
                     '"'.str_replace('\\', '\\\\', $projectConfig->getNameSpace()).'\\\\"',

@@ -80,7 +80,7 @@ class BitbucketPipelinesGenerator implements GeneratorInterface
             $config[] = $configurator->getTagsAfterTestBitbucketPipelines($configCollection);
         }
 
-        file_put_contents($this->projectPath . '/bitbucket-pipelines.yml', implode(PHP_EOL, array_filter($config)));
+        file_put_contents($this->projectPath.'/bitbucket-pipelines.yml', implode(PHP_EOL, array_filter($config)));
 
         $output->write($debugFormatter->stop(self::class, 'Generate bitbucket-pipelines.yml finished', true));
     }

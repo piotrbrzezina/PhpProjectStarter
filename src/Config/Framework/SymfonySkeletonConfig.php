@@ -18,14 +18,7 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonySkeletonConfig implements
-    ShelCommandConfigInterface,
-    PhpExtensionsConfigInterface,
-    DockerfileBuildStepsConfigInterface,
-    DockerComposeConfigInterface,
-    DockerComposeCiConfigInterface,
-    NginxConfigInterface,
-    PhpIniConfigInterface
+final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, NginxConfigInterface, PhpIniConfigInterface
 {
     private Twig $twig;
     private string $projectPath;

@@ -34,7 +34,9 @@ class MySQLConfig implements DockerComposeConfigInterface, DockerComposeCiConfig
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

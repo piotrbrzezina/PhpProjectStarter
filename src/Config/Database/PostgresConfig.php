@@ -34,7 +34,9 @@ class PostgresConfig implements DockerComposeConfigInterface, DockerComposeCiCon
 
     /**
      * @param ConfigCollection $configCollection
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string

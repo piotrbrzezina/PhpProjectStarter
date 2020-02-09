@@ -9,17 +9,15 @@ use App\Config\Framework\SymfonySkeletonConfig;
 use App\Config\Framework\SymfonyWebsiteSkeletonConfig;
 use App\Config\ProjectName\ProjectConfig;
 use App\Generator\GeneratorInterface;
-use App\Generator\PhpIni\PhpIniConfigInterface;
 use App\Generator\ProjectName\ProjectHelper;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
-use Twig\Environment as Twig;
 
 class SymfonyMissingStrictTypesFixer implements GeneratorInterface
 {
     private string $projectPath;
 
-    public function __construct( string $projectPath)
+    public function __construct(string $projectPath)
     {
         $this->projectPath = $projectPath;
     }

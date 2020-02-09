@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Config\Database\Integration;
-
 
 use App\Config\ConfigCollection;
 use App\Config\Database\MariaDBConfig;
@@ -15,10 +15,7 @@ use App\Generator\Makefile\MakefileSetupProjectConfigInterface;
 use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use Twig\Environment as Twig;
 
-class SymfonyIntegrationConfig implements
-    FinishConfigInterface,
-    MakefileSetupProjectConfigInterface,
-    ShelCommandConfigInterface
+class SymfonyIntegrationConfig implements FinishConfigInterface, MakefileSetupProjectConfigInterface, ShelCommandConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -39,7 +36,7 @@ class SymfonyIntegrationConfig implements
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
@@ -65,6 +62,4 @@ class SymfonyIntegrationConfig implements
             $configCollection->has(MariaDBConfig::class) ||
             $configCollection->has(PostgresConfig::class);
     }
-
-
 }

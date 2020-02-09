@@ -53,10 +53,11 @@ abstract class QuestionSelectManyFromMany implements QuestionInterface, Addition
 
             if ($this->getDefaultOptionsName() === $selectedValue) {
                 $this->selectedOptions = $this->getDefaultOptions();
+
                 break;
-            } elseif ('' === trim((string)$selectedValue)) {
+            } elseif ('' === trim((string) $selectedValue)) {
                 break;
-            } elseif ('?' === trim((string)$selectedValue)) {
+            } elseif ('?' === trim((string) $selectedValue)) {
                 $this->printAvailableTypes($io, $this->getAvailableOptions());
                 $io->writeln('');
 
