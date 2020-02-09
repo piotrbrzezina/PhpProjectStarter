@@ -32,6 +32,13 @@ class DockerComposeConfig implements DockerComposeConfigInterface, DockerCompose
         return $this->twig->render('Config/Base/DockerCompose/docker-compose.yaml.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string
     {
         return $this->getDockerComposeData($configCollection);

@@ -51,7 +51,7 @@ cp -r /opt/app/templates /opt/app/prod; \
 cp /opt/app/.env.local.php /opt/app/prod/.env.local.php;
 
 
-FROM php as app
+FROM php as php_app
 RUN php-binary-remove
 COPY --from=build /opt/app/prod /opt/app/
 RUN chown -R www-data:www-data /opt/app/
@@ -59,4 +59,4 @@ USER www-data
 CMD ["php-fpm"]
 
 FROM nginx AS nginx_app
-COPY --from=app /opt/app/public ./public
+COPY --from=build /opt/app/public ./public

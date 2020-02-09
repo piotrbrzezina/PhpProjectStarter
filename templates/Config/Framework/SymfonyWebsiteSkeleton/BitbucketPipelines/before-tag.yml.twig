@@ -6,7 +6,6 @@
                 - docker build -f ./docker/Dockerfile --target builder -t tmp-build:$BITBUCKET_TAG .
                 - docker run --rm -v $PWD/:/opt/app tmp-build:$BITBUCKET_TAG composer install --prefer-dist --no-progress --no-suggest
             services:
-                - composer
                 - docker
             artifacts:
                 - vendor/**

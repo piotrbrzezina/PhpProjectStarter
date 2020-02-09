@@ -45,7 +45,7 @@ class SymfonyMissingStrictTypesFixer implements GeneratorInterface
                 if (false !== $consoleContent) {
                     file_put_contents($this->projectPath.$pathToFile, str_replace(
                         '<?php',
-                        "<?php\n\ndeclare(strict_types=1);\n\n",
+                        "<?php\n\ndeclare(strict_types=1);",
                         $consoleContent
                     ));
                 }

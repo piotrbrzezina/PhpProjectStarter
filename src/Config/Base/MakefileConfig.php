@@ -21,11 +21,11 @@ class MakefileConfig implements InitialConfigInterface, MakefileConfigInterface,
 
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Base/Makefile/Makefile.yaml.twig');
+        return $this->twig->render('Config/Base/Makefile/Makefile.twig');
     }
 
     public function getSetupProjectStep(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Base/Makefile/MakefileSetupProjectStep.yaml.twig');
+        return $this->twig->render('Config/Base/Makefile/MakefileSetupProjectStep.twig');
     }
 }

@@ -3,9 +3,6 @@
             name: build image
             image: docker/compose:alpine-1.25.3
             trigger: manual
-            cache:
-                composer
-                docker
             script:
                 - export RELEASE=${BITBUCKET_TAG#"release-"}
                 - apk add make
@@ -23,8 +20,8 @@
                 - export RELEASE=${BITBUCKET_TAG#"release-"}
                 - pipe: atlassian/scp-deploy:0.3.4
                   variables:
-                      USER: $TEST_SERVER_USER
-                      SERVER: $TEST_SERVER_IP
+                      USER: $SERVER_USER
+                      SERVER: $SERVER_IP
                       REMOTE_PATH: '/opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT'
                       LOCAL_PATH: './docker/docker-compose-server.yaml ./Makefile'
                 - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && echo COMPOSE_FILE=docker-compose-server.yaml > .env && echo BUILD_TAG=$RELEASE >> .env && echo APP_WEB_PORT=$APP_WEB_PORT >> .env"
@@ -38,8 +35,8 @@
                 - export RELEASE=${BITBUCKET_TAG#"release-"}
                 - pipe: atlassian/scp-deploy:0.3.4
                   variables:
-                      USER: $TEST_SERVER_USER
-                      SERVER: $TEST_SERVER_IP
+                      USER: $SERVER_USER
+                      SERVER: $SERVER_IP
                       REMOTE_PATH: '/opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT'
                       LOCAL_PATH: './docker/docker-compose-server.yaml ./Makefile'
                 - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && echo COMPOSE_FILE=docker-compose-server.yaml > .env && echo BUILD_TAG=$RELEASE >> .env && echo APP_WEB_PORT=$APP_WEB_PORT >> .env"
