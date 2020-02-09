@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Config\Framework;
 
 use App\Config\ConfigCollection;
+use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
@@ -12,7 +13,7 @@ use App\Generator\ShellCommand\ShelCommandConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-final class LaravelConfig implements PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, ShelCommandConfigInterface, DockerComposeConfigInterface
+final class LaravelConfig implements PhpExtensionsConfigInterface, DockerComposeCiConfigInterface, DockerfileBuildStepsConfigInterface, ShelCommandConfigInterface, DockerComposeConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -66,6 +67,18 @@ final class LaravelConfig implements PhpExtensionsConfigInterface, DockerfileBui
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/Laravel/docker-compose.yaml.twig');
+    }
+
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
+    public function getDockerComposeCiData(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/Laravel/docker-compose-ci.yaml.twig');
     }
 
     public function getMakefileContent(ConfigCollection $configCollection): string

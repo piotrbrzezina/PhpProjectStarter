@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Config\Database;
 
 use App\Config\ConfigCollection;
+use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class PostgresConfig implements DockerComposeConfigInterface, PhpExtensionsConfigInterface
+class PostgresConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface
 {
     private Twig $twig;
 
@@ -29,6 +30,16 @@ class PostgresConfig implements DockerComposeConfigInterface, PhpExtensionsConfi
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Database/Postgres/docker-compose.yaml.twig', $this->getConnectionData());
+    }
+
+    /**
+     * @param ConfigCollection $configCollection
+     * @return string
+     * @throws Exception
+     */
+    public function getDockerComposeCiData(ConfigCollection $configCollection): string
+    {
+        return $this->getDockerComposeData($configCollection);
     }
 
     /**

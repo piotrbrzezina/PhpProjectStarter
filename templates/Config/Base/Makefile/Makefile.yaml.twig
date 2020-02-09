@@ -1,0 +1,18 @@
+#!/usr/bin/env make
+
+-include .env
+export
+
+default: bash
+
+start:
+	docker-compose up -d
+
+stop:
+	docker-compose stop
+
+down:
+	docker-compose down
+
+logs:
+	docker-compose logs --timestamps --tail 25 --follow

@@ -52,11 +52,25 @@ class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
         return '';
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/TestFramework/PhpSpec/Makefile.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getTestToRunOnBitbucketPipelines(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/TestFramework/PhpSpec/bitbucket-pipelines.yml.twig');

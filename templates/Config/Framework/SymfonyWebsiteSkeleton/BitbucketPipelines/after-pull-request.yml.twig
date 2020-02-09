@@ -1,23 +1,43 @@
+
       - step:
             name: build image
+            image: docker/compose:alpine-1.25.3
             trigger: manual
+            cache:
+                composer
+                docker
             script:
-                - ls -a
+                - apk add make
+                - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
+                - make docker-build-image
+                - make docker-push-image DOCKER-IMAGE-VERSION=$BITBUCKET_COMMIT
+            services:
+                - docker
+
       - step:
-            name: deploy to develop
-            deployment: testing
+            name: deploy to test
+            deployment: test
             trigger: manual
             script:
-                - ls -a
-      - step:
-            name: deploy to uat
-            deployment: uat
-            trigger: manual
-            script:
-                - ls -a
+                - pipe: atlassian/scp-deploy:0.3.4
+                  variables:
+                      USER: $TEST_SERVER_USER
+                      SERVER: $TEST_SERVER_IP
+                      REMOTE_PATH: '/opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT'
+                      LOCAL_PATH: './docker/docker-compose-server.yaml ./Makefile'
+                - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && echo COMPOSE_FILE=docker-compose-server.yaml > .env && echo BUILD_TAG=$BITBUCKET_COMMIT >> .env && echo APP_WEB_PORT=$APP_WEB_PORT >> .env"
+                - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD szula.aws.tshdev.io && make setup"
+
       - step:
             name: deploy to staging
             deployment: staging
             trigger: manual
             script:
-                - ls -a
+                - pipe: atlassian/scp-deploy:0.3.4
+                  variables:
+                      USER: $TEST_SERVER_USER
+                      SERVER: $TEST_SERVER_IP
+                      REMOTE_PATH: '/opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT'
+                      LOCAL_PATH: './docker/docker-compose-server.yaml ./Makefile'
+                - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && echo COMPOSE_FILE=docker-compose-server.yaml > .env && echo BUILD_TAG=$BITBUCKET_COMMIT >> .env && echo APP_WEB_PORT=$APP_WEB_PORT >> .env"
+                - ssh $SERVER_USER@$SERVER_IP "cd /opt/app/$BITBUCKET_DEPLOYMENT_ENVIRONMENT && docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD szula.aws.tshdev.io && make setup"

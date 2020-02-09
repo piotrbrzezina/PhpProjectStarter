@@ -65,7 +65,7 @@ class PhpSpecGenerator implements GeneratorInterface
             $config[] = $configurator->getPhpSpecConfigFile($configCollection);
         }
 
-        file_put_contents($this->projectPath.'/phpspec.yml', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/phpspec.yml', implode(PHP_EOL, array_filter($config)));
         $output->write($debugFormatter->stop(self::class, 'Generate PhpSpec finished', true));
     }
 }

@@ -42,12 +42,6 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
             $output->write('', true);
             $output->write($debugFormatter->start(self::class, 'Change file namespace'));
 
-            $config = [];
-            /** @var PhpIniConfigInterface $configurator */
-            foreach ($configCollection->get(PhpIniConfigInterface::class) as $configurator) {
-                $config[] = $configurator->getPhpIniConfig($configCollection);
-                $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
-            }
             $fileToFix = [
                 '/bin/console',
                 '/config/routes.yaml',

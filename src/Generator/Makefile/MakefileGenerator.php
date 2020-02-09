@@ -34,8 +34,13 @@ class MakefileGenerator implements GeneratorInterface
             $config[] = $configurator->getMakefileContent($configCollection);
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
         }
+        /** @var MakefileSetupProjectConfigInterface  $configurator */
+        foreach ($configCollection->get(MakefileSetupProjectConfigInterface::class) as $configurator) {
+            $config[] = $configurator->getSetupProjectStep($configCollection);
+            $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
+        }
 
-        file_put_contents($this->projectPath.'/Makefile', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/Makefile', implode(PHP_EOL, array_filter($config)));
 
         $output->write($debugFormatter->stop(self::class, 'Generate Makefile finished', true));
     }

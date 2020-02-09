@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Config\Framework;
 
 use App\Config\ConfigCollection;
+use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
 use App\Generator\NginxConfig\NginxConfigInterface;
@@ -17,7 +18,14 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, NginxConfigInterface, PhpIniConfigInterface
+final class SymfonySkeletonConfig implements
+    ShelCommandConfigInterface,
+    PhpExtensionsConfigInterface,
+    DockerfileBuildStepsConfigInterface,
+    DockerComposeConfigInterface,
+    DockerComposeCiConfigInterface,
+    NginxConfigInterface,
+    PhpIniConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -75,6 +83,20 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
 
         return $this->twig->render(
             'Config/Framework/SymfonySkeleton/docker-compose.yaml.twig',
+            compact('projectName')
+        );
+    }
+
+    public function getDockerComposeCiData(ConfigCollection $configCollection): string
+    {
+        $projectName = 'defaultProjectName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonySkeleton/docker-compose-ci.yaml.twig',
             compact('projectName')
         );
     }

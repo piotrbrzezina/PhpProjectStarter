@@ -43,8 +43,14 @@ class ComposerAutoloadNameSpaceFixer implements GeneratorInterface
             }
             $composerJsonContent = (string) file_get_contents($this->projectPath.'/composer.json');
             file_put_contents($this->projectPath.'/composer.json', str_replace(
-                '"App\\\\"',
-                '"'.str_replace('\\', '\\\\', $projectConfig->getNameSpace()).'\\\\"',
+                [
+                    '"App\\\\"',
+                    '"App\\\\Tests\\\\"'
+                ],
+                [
+                    '"'.str_replace('\\', '\\\\', $projectConfig->getNameSpace()).'\\\\"',
+                    '"'.str_replace('\\', '\\\\', $projectConfig->getNameSpace()).'\\\\Tests\\\\"',
+                ],
                 $composerJsonContent
             ));
 

@@ -39,7 +39,7 @@ class PhpIniGenerator implements GeneratorInterface
         if (!file_exists($this->projectPath.'/docker/php-fpm')) {
             mkdir($this->projectPath.'/docker/php-fpm', 0777, true);
         }
-        file_put_contents($this->projectPath.'/docker/php-fpm/php.ini', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/docker/php-fpm/php.ini', implode(PHP_EOL, array_filter($config)));
 
         $output->write($debugFormatter->stop(self::class, 'Generate php.ini finished', true));
     }

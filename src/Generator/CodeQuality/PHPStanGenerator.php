@@ -35,7 +35,7 @@ class PHPStanGenerator implements GeneratorInterface
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
         }
 
-        file_put_contents($this->projectPath.'/phpstan.neon', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/phpstan.neon', implode(PHP_EOL, array_filter($config)));
 
         $output->write($debugFormatter->stop(self::class, 'Generate phpstan.neon finished', true));
     }

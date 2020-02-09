@@ -28,8 +28,17 @@ RUN set -eux; \
     cp -r /opt/app/src /opt/app/prod; \
     cp -r /opt/app/var /opt/app/prod; \
     cp -r /opt/app/vendor /opt/app/prod; \
+    cp -r /opt/app/templates /opt/app/prod; \
     cp /opt/app/.env.local.php /opt/app/prod/.env.local.php;
 
 FROM php as app
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN set -eux; \
+composer global require "symfony/flex" --prefer-dist --no-progress --no-suggest --classmap-authoritative; \
+composer clear-cache
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
 COPY --from=build /opt/app/prod /opt/app/
+RUN set -eux; mkdir ./project
+CMD ["./bin/console","project:generate"]

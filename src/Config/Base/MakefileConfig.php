@@ -7,9 +7,10 @@ namespace App\Config\Base;
 use App\Config\ConfigCollection;
 use App\Config\InitialConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
+use App\Generator\Makefile\MakefileSetupProjectConfigInterface;
 use Twig\Environment as Twig;
 
-class MakefileConfig implements InitialConfigInterface, MakefileConfigInterface
+class MakefileConfig implements InitialConfigInterface, MakefileConfigInterface, MakefileSetupProjectConfigInterface
 {
     private Twig $twig;
 
@@ -20,6 +21,11 @@ class MakefileConfig implements InitialConfigInterface, MakefileConfigInterface
 
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Base/Makefile/Makefile.yaml');
+        return $this->twig->render('Config/Base/Makefile/Makefile.yaml.twig');
+    }
+
+    public function getSetupProjectStep(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Base/Makefile/MakefileSetupProjectStep.yaml.twig');
     }
 }

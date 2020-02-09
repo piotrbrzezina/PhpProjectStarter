@@ -15,10 +15,17 @@ class ProjectNameQuestion implements QuestionInterface
 
     public function askQuestion(ConsoleStyle $io): void
     {
-        $clientName = $io->ask('What is the client name', null, function ($answer) {
+        $io->writeln('Client name and project name will be used as <comment>namespace</comment> for you project');
+        $clientName = $io->ask('What is the client name ', null, function ($answer) {
             if (strlen(trim((string) $answer)) < 3) {
                 throw new RuntimeException(
                     'The name should contain at least 3 char'
+                );
+            }
+
+            if(!preg_match('/^[a-zA-Z]+$/i',trim($answer))){
+                throw new RuntimeException(
+                    'The name should contains only letters a-z A-Z'
                 );
             }
 
@@ -29,6 +36,12 @@ class ProjectNameQuestion implements QuestionInterface
             if (strlen(trim((string) $answer)) < 3) {
                 throw new RuntimeException(
                     'The name should contain at least 3 char'
+                );
+            }
+
+            if(!preg_match('/^[a-zA-Z]+$/i',trim($answer))){
+                throw new RuntimeException(
+                    'The name should contains only letters a-z A-Z'
                 );
             }
 

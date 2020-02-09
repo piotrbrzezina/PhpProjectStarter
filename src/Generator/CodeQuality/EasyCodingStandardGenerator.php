@@ -35,7 +35,7 @@ class EasyCodingStandardGenerator implements GeneratorInterface
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
         }
 
-        file_put_contents($this->projectPath.'/ecs.yaml', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/ecs.yaml', implode(PHP_EOL, array_filter($config)));
 
         $output->write($debugFormatter->stop(self::class, 'Generate ecs.yaml finished', true));
     }

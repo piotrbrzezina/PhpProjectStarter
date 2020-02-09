@@ -3,11 +3,11 @@ COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR /opt/app
 
 
-FROM piotrbrzezina/php-binary:7.4.1-fpm as php
-
+FROM piotrbrzezina/php-binary:7.4.2-fpm as php
+COPY docker/php-fpm/php.ini /usr/local/etc/php/conf.d/99-overrides.ini
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 EXPOSE 9000
-CMD ["php-fpm"]
+
 
 RUN php-install {{ phpExtensions|join(" ") }}; \
 set -eux; \
@@ -24,6 +24,7 @@ RUN set -eux; \
 composer global require "symfony/flex" --prefer-dist --no-progress --no-suggest --classmap-authoritative; \
 composer clear-cache
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
+CMD ["php-fpm"]
 
 
 FROM builder as build
@@ -46,12 +47,16 @@ cp -r /opt/app/src /opt/app/prod; \
 cp -r /opt/app/var /opt/app/prod; \
 cp -r /opt/app/vendor /opt/app/prod; \
 cp -r /opt/app/public /opt/app/prod; \
+cp -r /opt/app/templates /opt/app/prod; \
 cp /opt/app/.env.local.php /opt/app/prod/.env.local.php;
 
 
 FROM php as app
+RUN php-binary-remove
 COPY --from=build /opt/app/prod /opt/app/
 RUN chown -R www-data:www-data /opt/app/
+USER www-data
+CMD ["php-fpm"]
 
 FROM nginx AS nginx_app
 COPY --from=app /opt/app/public ./public

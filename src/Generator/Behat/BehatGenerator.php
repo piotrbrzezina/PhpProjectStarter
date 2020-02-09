@@ -40,7 +40,7 @@ class BehatGenerator implements GeneratorInterface
             $config[] = $configurator->getBehatConfig($configCollection);
             $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
         }
-        file_put_contents($this->projectPath.'/behat.yml', implode(PHP_EOL, $config));
+        file_put_contents($this->projectPath.'/behat.yml', implode(PHP_EOL, array_filter($config)));
 
         /** @var BehatConfigInterface $configurator */
         foreach ($configCollection->get(BehatConfigInterface::class) as $configurator) {

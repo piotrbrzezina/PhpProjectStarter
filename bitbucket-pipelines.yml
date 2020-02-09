@@ -45,19 +45,75 @@ pipelines:
                 - docker
       - step:
           name: build image
+          image: docker/compose:alpine-1.25.3
           trigger: manual
+          cache:
+            composer
+            docker
           script:
-            - ls -a
-      - step:
-          name: deploy to test
-          deployment: test
-          trigger: manual
-          script:
-            - ls -a
+            - apk add make
+            - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
+            - make docker-build-image
+            - make docker-push-image DOCKER-IMAGE-VERSION=$BITBUCKET_COMMIT
+          services:
+            - docker
 
   tags:
     release-*:
       - step:
-          name: Rebuild and release
+          image: docker/compose:alpine-1.25.3
+          name: Build
           script:
-            - echo $BITBUCKET_TAG
+            - docker build -f ./docker/Dockerfile --target builder -t tmp-build:$BITBUCKET_COMMIT .
+            - docker run --rm -v $PWD/:/opt/app tmp-build:$BITBUCKET_COMMIT composer install --prefer-dist --no-progress --no-suggest
+          services:
+            - docker
+          artifacts:
+            - vendor/**
+      - parallel:
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Easy Coding Standards
+              script:
+                - apk add make
+                - make ecs
+              services:
+                - docker
+              caches:
+                - docker
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Php mess detector
+              script:
+                - apk add make
+                - make phpmd
+              services:
+                - docker
+              caches:
+                - docker
+          - step:
+              image: docker/compose:alpine-1.25.3
+              name: Phpstan
+              script:
+                - ls -a
+                - apk add make
+                - make phpstan
+              services:
+                - docker
+              caches:
+                - docker
+      - step:
+          name: build image
+          image: docker/compose:alpine-1.25.3
+          trigger: manual
+          cache:
+            composer
+            docker
+          script:
+            - export RELEASE=${BITBUCKET_TAG#"release-"}
+            - apk add make
+            - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
+            - make docker-build-image
+            - make docker-push-image DOCKER-IMAGE-VERSION=$RELEASE
+          services:
+            - docker

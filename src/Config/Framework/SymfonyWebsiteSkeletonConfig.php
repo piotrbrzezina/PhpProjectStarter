@@ -11,6 +11,7 @@ use App\Generator\Behat\BehatFeatureFile;
 use App\Generator\Behat\BehatFeatureFileInterface;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesPullRequestConfigInterface;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesTagConfigInterface;
+use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
@@ -24,7 +25,18 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface
+final class SymfonyWebsiteSkeletonConfig implements
+    ShelCommandConfigInterface,
+    PhpExtensionsConfigInterface,
+    DockerfileBuildStepsConfigInterface,
+    DockerComposeConfigInterface,
+    DockerComposeCiConfigInterface,
+    NginxConfigInterface,
+    PhpIniConfigInterface,
+    MakefileConfigInterface,
+    BitbucketPipelinesPullRequestConfigInterface,
+    BitbucketPipelinesTagConfigInterface,
+    BehatConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -95,6 +107,29 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
      *
      * @throws Exception
      */
+    public function getDockerComposeCiData(ConfigCollection $configCollection): string
+    {
+        $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonyWebsiteSkeleton/docker-compose-ci.yaml.twig',
+            compact('projectName', 'clientName')
+        );
+    }
+
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getNginxConfig(ConfigCollection $configCollection): string
     {
         $clientMaxBodySize = 16;
@@ -130,31 +165,85 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
         );
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Makefile.twig');
+        $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonyWebsiteSkeleton/Makefile.twig',
+            compact('projectName', 'clientName')
+        );
+
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getPullRequestsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-pull-request.yml.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getPullRequestsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/after-pull-request.yml.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getTagsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-tag.yml.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getTagsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/after-tag.yml.twig');
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
     public function getBehatConfig(ConfigCollection $configCollection): string
     {
         $projectConfig = ProjectHelper::getProject($configCollection);

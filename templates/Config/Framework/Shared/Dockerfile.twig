@@ -1,4 +1,4 @@
-FROM piotrbrzezina/php-binary:7.4.1-fpm as php
+FROM piotrbrzezina/php-binary:7.4.2-fpm as php
 
 RUN php-install {{ phpExtensions|join(" ") }}; \
     set -eux; \
