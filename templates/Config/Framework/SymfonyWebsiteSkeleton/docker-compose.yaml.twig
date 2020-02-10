@@ -4,7 +4,7 @@
             context: .
             target: nginx
             dockerfile: ./docker/Dockerfile
-        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest
+        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${BUILD_TAG:-latest}
         volumes:
             - .:/opt/app/public
         ports:
@@ -15,7 +15,7 @@
             context: .
             target: builder
             dockerfile: ./docker/Dockerfile
-        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest
+        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${BUILD_TAG:-latest}
         volumes:
             - .:/opt/app
             - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini

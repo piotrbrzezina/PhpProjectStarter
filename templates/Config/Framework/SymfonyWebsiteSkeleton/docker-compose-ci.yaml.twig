@@ -1,8 +1,8 @@
 
     nginx:
-        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest
+        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${BUILD_TAG:-latest}
         ports:
             - "${APP_WEB_PORT:-80}:80"
 
     php:
-        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest
+        image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${BUILD_TAG:-latest}
