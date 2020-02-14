@@ -7,8 +7,6 @@ namespace App\Config\Framework;
 use App\Config\ConfigCollection;
 use App\Config\ProjectName\ProjectConfig;
 use App\Generator\Behat\BehatConfigInterface;
-use App\Generator\Behat\BehatFeatureFile;
-use App\Generator\Behat\BehatFeatureFileInterface;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesPullRequestConfigInterface;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesTagConfigInterface;
 use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
@@ -39,8 +37,8 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', 'symfony/website-skeleton', '.'],
-            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', 'symfony/profiler-pack', 'symfony/debug-bundle'],
+            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', '--ignore-platform-reqs', 'symfony/website-skeleton', '.'],
+            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', '--ignore-platform-reqs', 'symfony/profiler-pack', 'symfony/debug-bundle'],
         ];
     }
 
@@ -246,19 +244,10 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
     }
 
     /**
-     * @param ConfigCollection $configCollection
-     *
-     * @return BehatFeatureFileInterface[]
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function getBehatFeatureFile(ConfigCollection $configCollection): array
     {
-        return [
-            new BehatFeatureFile(
-                'FeatureContext.php',
-                $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Behat/FeatureContext.php.twig')
-            ),
-        ];
+        return [];
     }
 }

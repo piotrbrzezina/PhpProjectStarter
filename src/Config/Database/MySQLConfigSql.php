@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Config\Database;
 
 use App\Config\ConfigCollection;
+use App\Generator\Database\DatabaseConnectionConfig;
+use App\Generator\Database\DatabaseSqlConnectionConfigInterface;
 use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class MySQLConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface
+class MySQLConfigSql implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface, DatabaseSqlConnectionConfigInterface
 {
     private Twig $twig;
 
@@ -29,7 +31,18 @@ class MySQLConfig implements DockerComposeConfigInterface, DockerComposeCiConfig
      */
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Database/MySQL/docker-compose.yaml.twig');
+        $config = $this->getConnectionData($configCollection);
+
+        return $this->twig->render(
+            'Config/Database/MySQL/docker-compose.yaml.twig',
+            [
+                'host' => $config->getHost(),
+                'version' => $config->getVersion(),
+                'user' => $config->getUser(),
+                'password' => $config->getPassword(),
+                'databaseName' => $config->getDatabaseName(),
+            ]
+        );
     }
 
     /**
@@ -52,5 +65,18 @@ class MySQLConfig implements DockerComposeConfigInterface, DockerComposeCiConfig
         return [
             'pdo_mysql',
         ];
+    }
+
+    public function getConnectionData(ConfigCollection $configCollection): DatabaseConnectionConfig
+    {
+        return new DatabaseConnectionConfig(
+            'mysql',
+            'database',
+            '3306',
+            '8.0.18',
+            'dbuser',
+            'dbpass',
+            'dbname',
+        );
     }
 }

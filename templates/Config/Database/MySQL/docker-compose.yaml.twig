@@ -1,8 +1,8 @@
 
-    database:
-        image: mysql:8.0.18
+    {{host}}:
+        image: mysql:{{version}}
         environment:
-            MYSQL_ROOT_PASSWORD: ${MARIA_ROOT_PASSWORD:-dbrootpass}
-            MYSQL_USER: ${MARIA_USER:-dbuser}
-            MYSQL_PASSWORD: ${MARIA_PASSWORD:-dbpass}
-            MYSQL_DATABASE: ${MARIA_DATABASE:-dbname}
+            MYSQL_ROOT_PASSWORD: ${MARIA_ROOT_PASSWORD:-{{password}}}
+            MYSQL_USER: ${MARIA_USER:-{{user}}}
+            MYSQL_PASSWORD: ${MARIA_PASSWORD:-{{password}}}
+            MYSQL_DATABASE: ${MARIA_DATABASE:-{{databaseName}}}

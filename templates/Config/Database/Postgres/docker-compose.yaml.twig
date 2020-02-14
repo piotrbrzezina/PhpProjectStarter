@@ -1,6 +1,6 @@
 
     {{host}}:
-        image: postgres:9.4.25
+        image: postgres:{{version}}
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-{{user}}}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-{{password}}}

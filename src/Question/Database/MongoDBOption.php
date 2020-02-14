@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Question\Database;
 
-use App\Config\Database\PostgresConfig;
+use App\Config\Database\MongoDBConfig;
 
 class MongoDBOption implements DatabaseOptionInterface
 {
-    private PostgresConfig $config;
+    private MongoDBConfig $config;
 
-    public function __construct(PostgresConfig $config)
+    public function __construct(MongoDBConfig $config)
     {
         $this->config = $config;
     }
@@ -25,7 +25,7 @@ class MongoDBOption implements DatabaseOptionInterface
         return false;
     }
 
-    public function getConfig(): PostgresConfig
+    public function getConfig(): MongoDBConfig
     {
         return $this->config;
     }

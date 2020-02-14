@@ -59,6 +59,8 @@ services:
 
   App\Question\Framework\FrameworkQuestion:
     arguments: [!tagged app.question.framework.option]
+    tags:
+      - { name: app.question, priority: 100 }
 
   App\Question\Database\DatabaseQuestion:
     arguments: [!tagged app.question.database.option]

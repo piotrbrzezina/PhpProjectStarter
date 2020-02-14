@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Question\Database;
 
-use App\Config\Database\MySQLConfig;
+use App\Config\Database\MySQLConfigSql;
 
 class MySQLOption implements DatabaseOptionInterface
 {
-    private MySQLConfig $config;
+    private MySQLConfigSql $config;
 
-    public function __construct(MySQLConfig $config)
+    public function __construct(MySQLConfigSql $config)
     {
         $this->config = $config;
     }
@@ -25,7 +25,7 @@ class MySQLOption implements DatabaseOptionInterface
         return false;
     }
 
-    public function getConfig(): MySQLConfig
+    public function getConfig(): MySQLConfigSql
     {
         return $this->config;
     }

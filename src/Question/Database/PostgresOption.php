@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Question\Database;
 
-use App\Config\Database\PostgresConfig;
+use App\Config\Database\PostgresConfigSql;
 
 class PostgresOption implements DatabaseOptionInterface
 {
-    private PostgresConfig $config;
+    private PostgresConfigSql $config;
 
-    public function __construct(PostgresConfig $config)
+    public function __construct(PostgresConfigSql $config)
     {
         $this->config = $config;
     }
@@ -25,7 +25,7 @@ class PostgresOption implements DatabaseOptionInterface
         return true;
     }
 
-    public function getConfig(): PostgresConfig
+    public function getConfig(): PostgresConfigSql
     {
         return $this->config;
     }

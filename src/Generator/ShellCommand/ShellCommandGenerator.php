@@ -27,6 +27,8 @@ class ShellCommandGenerator implements GeneratorInterface
             foreach ($config->getShelCommandToRun($configCollection) as $command) {
                 $output->write('', true);
                 $output->write('', true);
+//                echo join(' ',$command);continue;
+
                 $process = new Process($command, null, null, null, null);
                 $processId = spl_object_hash($process);
                 $message = $this->consoleEscape($process->getCommandLine());

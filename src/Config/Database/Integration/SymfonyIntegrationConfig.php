@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Config\Database\Integration;
 
 use App\Config\ConfigCollection;
-use App\Config\Database\MariaDBConfig;
-use App\Config\Database\MySQLConfig;
-use App\Config\Database\PostgresConfig;
+use App\Config\Database\MariaDBConfigSql;
+use App\Config\Database\MongoDBConfig;
+use App\Config\Database\MySQLConfigSql;
+use App\Config\Database\PostgresConfigSql;
 use App\Config\FinishConfigInterface;
 use App\Config\Framework\SymfonySkeletonConfig;
 use App\Config\Framework\SymfonyWebsiteSkeletonConfig;
@@ -28,7 +29,7 @@ class SymfonyIntegrationConfig implements FinishConfigInterface, MakefileSetupPr
 
     public function getSetupProjectStep(ConfigCollection $configCollection): string
     {
-        if (!$this->isSymfonySelected($configCollection) && !$this->isSqlDatabaseSelected($configCollection)) {
+        if (!$this->isSymfonySelected($configCollection) || !$this->isSqlDatabaseSelected($configCollection)) {
             return '';
         }
 
@@ -40,14 +41,20 @@ class SymfonyIntegrationConfig implements FinishConfigInterface, MakefileSetupPr
      */
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
-        if (!$this->isSymfonySelected($configCollection) && !$this->isSqlDatabaseSelected($configCollection)) {
+        if (!$this->isSymfonySelected($configCollection) || !($this->isSqlDatabaseSelected($configCollection) || $this->isMongoSelected($configCollection))) {
             return [];
         }
 
-        return [
-            ['composer', 'require', '--working-dir', $this->projectPath, 'symfony/orm-pack'],
-            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', 'symfony/maker-bundle'],
-        ];
+        $libraries = [];
+        if ($this->isSqlDatabaseSelected($configCollection)) {
+            $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, 'symfony/orm-pack', '--ignore-platform-reqs'];
+        } elseif ($this->isMongoSelected($configCollection)) {
+            $libraries[] = ['composer', 'remove', '--working-dir', $this->projectPath, 'symfony/orm-pack', '--ignore-platform-reqs'];
+        }
+
+        $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, '--dev', 'symfony/maker-bundle', '--ignore-platform-reqs'];
+
+        return $libraries;
     }
 
     private function isSymfonySelected(ConfigCollection $configCollection): bool
@@ -58,8 +65,13 @@ class SymfonyIntegrationConfig implements FinishConfigInterface, MakefileSetupPr
 
     private function isSqlDatabaseSelected(ConfigCollection $configCollection): bool
     {
-        return $configCollection->has(MySQLConfig::class) ||
-            $configCollection->has(MariaDBConfig::class) ||
-            $configCollection->has(PostgresConfig::class);
+        return $configCollection->has(MySQLConfigSql::class) ||
+            $configCollection->has(MariaDBConfigSql::class) ||
+            $configCollection->has(PostgresConfigSql::class);
+    }
+
+    private function isMongoSelected(ConfigCollection $configCollection): bool
+    {
+        return $configCollection->has(MongoDBConfig::class);
     }
 }

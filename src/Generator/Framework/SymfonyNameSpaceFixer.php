@@ -47,6 +47,7 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
                 '/config/packages/validator.yaml',
                 '/config/packages/doctrine.yaml',
                 '/config/packages/doctrine_migrations.yaml',
+                '/config/packages/doctrine_mongodb.yaml',
                 '/config/routes.yaml',
                 '/config/services.yaml',
                 '/config/services_test.yaml',
@@ -54,6 +55,11 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
                 '/src/Kernel.php',
             ];
             foreach ($fileToFix as $pathToFile) {
+                if (!file_exists($this->projectPath.$pathToFile)) {
+                    $output->write('File does not exist '.$this->projectPath.$pathToFile, true);
+
+                    continue;
+                }
                 $consoleContent = file_get_contents($this->projectPath.$pathToFile);
                 if (false !== $consoleContent) {
                     file_put_contents($this->projectPath.$pathToFile, str_replace(

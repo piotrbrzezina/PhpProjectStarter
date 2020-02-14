@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Config\Database;
 
 use App\Config\ConfigCollection;
+use App\Generator\Database\DatabaseConnectionConfig;
+use App\Generator\Database\DatabaseSqlConnectionConfigInterface;
 use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use Exception;
 use Twig\Environment as Twig;
 
-class PostgresConfig implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface
+class PostgresConfigSql implements DockerComposeConfigInterface, DockerComposeCiConfigInterface, PhpExtensionsConfigInterface, DatabaseSqlConnectionConfigInterface
 {
     private Twig $twig;
 
@@ -29,7 +31,18 @@ class PostgresConfig implements DockerComposeConfigInterface, DockerComposeCiCon
      */
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Database/Postgres/docker-compose.yaml.twig', $this->getConnectionData());
+        $config = $this->getConnectionData($configCollection);
+
+        return $this->twig->render(
+            'Config/Database/Postgres/docker-compose.yaml.twig',
+            [
+                'host' => $config->getHost(),
+                'version' => $config->getVersion(),
+                'user' => $config->getUser(),
+                'password' => $config->getPassword(),
+                'databaseName' => $config->getDatabaseName(),
+            ]
+        );
     }
 
     /**
@@ -44,20 +57,17 @@ class PostgresConfig implements DockerComposeConfigInterface, DockerComposeCiCon
         return $this->getDockerComposeData($configCollection);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getConnectionData(): array
+    public function getConnectionData(ConfigCollection $configCollection): DatabaseConnectionConfig
     {
-        return
-            [
-                'host' => 'database',
-                'port' => '5432',
-                'version' => '11',
-                'user' => 'dbuser',
-                'password' => 'dbpass',
-                'databaseName' => 'dbname',
-            ];
+        return new DatabaseConnectionConfig(
+            'postgresql',
+            'database',
+            '5432',
+            '11',
+            'dbuser',
+            'dbpass',
+            'dbname',
+        );
     }
 
     /**

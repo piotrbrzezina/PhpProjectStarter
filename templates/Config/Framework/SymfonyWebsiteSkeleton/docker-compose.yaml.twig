@@ -6,7 +6,7 @@
             dockerfile: ./docker/Dockerfile
         image: szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${BUILD_TAG:-latest}
         volumes:
-            - .:/opt/app/public
+            - ./public:/opt/app/public
         ports:
             - "${APP_WEB_PORT:-80}:80"
 

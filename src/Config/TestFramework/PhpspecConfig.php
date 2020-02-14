@@ -28,7 +28,7 @@ class PhpspecConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'require', 'phpspec/phpspec', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts'],
+            ['composer', 'require', 'phpspec/phpspec', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts', '--ignore-platform-reqs'],
         ];
     }
 

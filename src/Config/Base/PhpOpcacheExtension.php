@@ -29,6 +29,10 @@ class PhpOpcacheExtension implements InitialConfigInterface, PhpIniConfigInterfa
      */
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {
-        return ['opcache'];
+        return [
+            'opcache',
+            'intl',
+            'cgi-fcgi',
+        ];
     }
 }

@@ -5,6 +5,7 @@ pipelines:
           image: docker/compose:alpine-1.25.3
           name: Build
           script:
+            - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
             - docker build -f ./docker/Dockerfile --target builder -t tmp-build:$BITBUCKET_COMMIT .
             - docker run --rm -v $PWD/:/opt/app tmp-build:$BITBUCKET_COMMIT composer install --prefer-dist --no-progress --no-suggest
           services:
@@ -64,6 +65,7 @@ pipelines:
           image: docker/compose:alpine-1.25.3
           name: Build
           script:
+            - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
             - docker build -f ./docker/Dockerfile --target builder -t tmp-build:$BITBUCKET_COMMIT .
             - docker run --rm -v $PWD/:/opt/app tmp-build:$BITBUCKET_COMMIT composer install --prefer-dist --no-progress --no-suggest
           services:
