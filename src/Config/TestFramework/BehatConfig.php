@@ -27,9 +27,9 @@ class BehatConfig implements ShelCommandConfigInterface, MakefileConfigInterface
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         $libraries = [];
-        $libraries[] = ['composer', 'require', 'behat/behat', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts', '--ignore-platform-reqs'];
+        $libraries[] = ['composer', 'require', 'behat/behat', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts'];
         if ($configCollection->has(SymfonySkeletonConfig::class) || $configCollection->has(SymfonyWebsiteSkeletonConfig::class)) {
-            $libraries[] = ['composer', 'require', 'friends-of-behat/symfony-extension:v2.1.0-BETA.1 as 2.0.9', 'friends-of-behat/mink', 'friends-of-behat/mink-extension', 'friends-of-behat/mink-browserkit-driver', '--ignore-platform-reqs', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts'];
+            $libraries[] = ['composer', 'require', 'friends-of-behat/symfony-extension:v2.1.0-BETA.1 as 2.0.9', 'friends-of-behat/mink', 'friends-of-behat/mink-extension', 'friends-of-behat/mink-browserkit-driver', '--working-dir', $this->projectPath, '--dev', '--no-suggest', '--no-scripts'];
         }
 
         return $libraries;

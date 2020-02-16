@@ -26,7 +26,7 @@ class DockerComposeGenerator implements GeneratorInterface
         $debugFormatter = new DebugFormatterHelper();
         $output->write('', true);
         $output->write('', true);
-        $output->write($debugFormatter->start(self::class, 'Generate docker-compose.yaml'));
+        $output->write($debugFormatter->start(self::class, 'Generate docker-compose'));
 
         $config = [];
         /** @var DockerComposeConfigInterface $configurator */
@@ -52,6 +52,18 @@ class DockerComposeGenerator implements GeneratorInterface
         }
         file_put_contents($this->projectPath.'/docker/docker-compose-ci.yaml', implode(PHP_EOL, array_filter($config)));
 
-        $output->write($debugFormatter->stop(self::class, 'Generate docker-compose.yaml finished', true));
+        $config = [];
+        /** @var DockerComposeOverrideConfigInterface $configurator */
+        foreach ($configCollection->get(DockerComposeOverrideConfigInterface::class) as $configurator) {
+            $output->write($debugFormatter->progress(self::class, get_class($configCollection)));
+            $config[] = $configurator->getDockerComposeOverrideData($configCollection);
+        }
+
+        if (!file_exists($this->projectPath.'/docker')) {
+            mkdir($this->projectPath.'/docker');
+        }
+        file_put_contents($this->projectPath.'/docker-compose.override.yaml.dist', implode(PHP_EOL, array_filter($config)));
+
+        $output->write($debugFormatter->stop(self::class, 'Generate docker-compose finished', true));
     }
 }

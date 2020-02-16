@@ -55,7 +55,7 @@ class ComposerAutoloadNameSpaceFixer implements GeneratorInterface
             ));
 
             $output->write('', true);
-            $process = new Process(['composer', 'install', '--working-dir', $this->projectPath, '--ignore-platform-reqs'], null, null, null, null);
+            $process = new Process(['composer', 'install', '--working-dir', $this->projectPath], null, null, null, null);
             $processId = spl_object_hash($process);
             $message = $this->consoleEscape($process->getCommandLine());
             $output->write($this->debugFormatter->start($processId, $message));

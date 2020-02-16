@@ -75,7 +75,7 @@ class MongoDBConfig implements DockerComposeConfigInterface, DockerComposeCiConf
         $libraries = [];
         if ($configCollection->has(SymfonyWebsiteSkeletonConfig::class) || $configCollection->has(SymfonySkeletonConfig::class)) {
             $libraries[] = ['composer', 'config', 'extra.symfony.allow-contrib', 'true', '--working-dir', $this->projectPath];
-            $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, '--ignore-platform-reqs', 'doctrine/mongodb-odm-bundle'];
+            $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, 'doctrine/mongodb-odm-bundle'];
             $libraries[] = ['composer', 'config', 'extra.symfony.allow-contrib', 'false', '--working-dir', $this->projectPath];
         }
 

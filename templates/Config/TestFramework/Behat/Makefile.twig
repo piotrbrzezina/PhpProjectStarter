@@ -1,3 +1,4 @@
 
 behat:
-	docker-compose run --rm php vendor/bin/behat
+	docker-compose up -d php
+	docker-compose exec php vendor/bin/behat

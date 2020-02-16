@@ -1,3 +1,4 @@
 
 setup:
+	cp -n ./docker-compose.override.yaml.dist ./docker-compose.override.yaml || :
 	docker-compose up --force-recreate --always-recreate-deps -d --remove-orphans --build

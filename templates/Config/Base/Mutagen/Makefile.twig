@@ -1,0 +1,19 @@
+
+mutagen-enable:
+	@echo "Enable mutagen"
+	@make down
+	sed '/^ *- .:\/opt\/app/s/^/#/' docker-compose.override.yaml> mutagen.tmp && cat mutagen.tmp > docker-compose.override.yaml
+	cp -n ./mutagen.yml.dist ./mutagen.yml || :
+	sed 's/{directory-name}/'$(notdir $(CURDIR))'/g' mutagen.yml > mutagen.tmp && cat mutagen.tmp > mutagen.yml
+	rm mutagen.tmp;
+	@make start
+	mutagen project terminate || :
+	mutagen project start || :
+
+mutagen-disable:
+	@echo "Disable mutagen"
+	mutagen project terminate || :
+	sed '/^# *- .:\/opt\/app/s/^#//' docker-compose.override.yaml> mutagen.tmp && cat mutagen.tmp > docker-compose.override.yaml
+	rm mutagen.tmp;
+	@make down
+	@make start

@@ -32,8 +32,8 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', '--ignore-platform-reqs', 'symfony/skeleton', '.'],
-            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', '--ignore-platform-reqs', 'symfony/profiler-pack', 'symfony/debug-bundle'],
+            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', 'symfony/skeleton', '.'],
+            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', 'symfony/profiler-pack', 'symfony/debug-bundle'],
         ];
     }
 
