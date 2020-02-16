@@ -4,6 +4,8 @@
             name: Behat
             script:
                 - apk add make
+                - cp ./docker-compose.override.yaml.dist ./docker-compose.override.yaml
+                - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
                 - make behat
             services:
                 - docker

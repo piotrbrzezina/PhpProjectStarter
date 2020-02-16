@@ -1,4 +1,4 @@
 
 phpspec-run:
 	docker-compose up -d php
-	docker-compose exec php vendor/bin/phpspec run --no-code-generation --ansi
+	docker-compose exec -T php vendor/bin/phpspec run --no-code-generation --ansi

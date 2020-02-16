@@ -6,7 +6,7 @@ sync:
   code:
     alpha: "./"
     beta: "docker://{directory-name}_php_1/opt/app"
-    mode: "one-way-safe"
+    mode: "two-way-resolved"
     watch:
       pollingInterval: 2
     permissions:
@@ -18,32 +18,6 @@ sync:
         - "/build/"
         - "/vendor/"
         - "/var/"
-  composerjson:
-    alpha: "./composer.json"
-    beta: "docker://{directory-name}_php_1/opt/app/composer.json"
-    mode: "two-way-resolved"
-    watch:
-      pollingInterval: 2
-    permissions:
-      defaultFileMode: 666
-      defaultDirectoryMode: 777
-    ignore:
-      vcs: false
-    symlink:
-      mode: "ignore"
-  composerlock:
-    alpha: "./composer.lock"
-    beta: "docker://{directory-name}_php_1/opt/app/composer.lock"
-    mode: "two-way-resolved"
-    watch:
-      pollingInterval: 2
-    permissions:
-      defaultFileMode: 666
-      defaultDirectoryMode: 777
-    ignore:
-      vcs: false
-    symlink:
-      mode: "ignore"
   var:
     alpha: "./var"
     beta: "docker://{directory-name}_php_1/opt/app/var"
