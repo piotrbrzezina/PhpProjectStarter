@@ -7,11 +7,14 @@ namespace App\Config\Framework;
 use App\Config\ConfigCollection;
 use App\Config\ProjectName\ProjectConfig;
 use App\Generator\Behat\BehatConfigInterface;
+use App\Generator\Behat\BehatFeatureFile;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesPullRequestConfigInterface;
 use App\Generator\BitbucketPipelines\BitbucketPipelinesTagConfigInterface;
 use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
+use App\Generator\DockerCompose\DockerComposeOverrideConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
+use App\Generator\Git\GitIgnoreConfigInterface;
 use App\Generator\Makefile\MakefileConfigInterface;
 use App\Generator\NginxConfig\NginxConfigInterface;
 use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
@@ -23,7 +26,7 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface
+final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, DockerComposeOverrideConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface, GitIgnoreConfigInterface
 {
     private Twig $twig;
     private string $projectPath;
@@ -37,8 +40,8 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', '--ignore-platform-reqs', 'symfony/website-skeleton', '.'],
-            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', '--ignore-platform-reqs', 'symfony/profiler-pack', 'symfony/debug-bundle'],
+            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', 'symfony/website-skeleton', '.'],
+            ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', 'symfony/profiler-pack', 'symfony/debug-bundle'],
         ];
     }
 
@@ -106,6 +109,29 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
 
         return $this->twig->render(
             'Config/Framework/SymfonyWebsiteSkeleton/docker-compose-ci.yaml.twig',
+            compact('projectName', 'clientName')
+        );
+    }
+
+    /**
+     * @param ConfigCollection $configCollection
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
+    public function getDockerComposeOverrideData(ConfigCollection $configCollection): string
+    {
+        $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonyWebsiteSkeleton/docker-compose.override.yaml.twig',
             compact('projectName', 'clientName')
         );
     }
@@ -248,6 +274,16 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
      */
     public function getBehatFeatureFile(ConfigCollection $configCollection): array
     {
-        return [];
+        return [
+            new BehatFeatureFile(
+                'FeatureContext.php',
+                $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/Behat/FeatureContext.php.twig')
+            ),
+        ];
+    }
+
+    public function getGitIgnoreContent(ConfigCollection $configCollection): string
+    {
+        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/gitignore.twig');
     }
 }

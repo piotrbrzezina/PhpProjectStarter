@@ -1,6 +1,7 @@
 
 bash:
-	docker-compose run --rm php sh
+	docker-compose up -d php
+	docker-compose exec php sh
 
 docker-build-image:
 	docker build --no-cache --target php_app --file ./docker/Dockerfile --tag kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest .

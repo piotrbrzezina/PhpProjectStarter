@@ -8,7 +8,6 @@ use App\Config\ConfigCollection;
 use App\Config\Framework\SymfonySkeletonConfig;
 use App\Config\Framework\SymfonyWebsiteSkeletonConfig;
 use App\Generator\Database\DatabaseMongoConnectionConfigInterface;
-use App\Generator\Database\DatabaseSqlConnectionConfigInterface;
 use App\Generator\GeneratorInterface;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +23,7 @@ class SymfonyMongoDatabaseConnectionSetup implements GeneratorInterface
 
     public function generate(ConfigCollection $configCollection, OutputInterface $output): void
     {
-        if ($configCollection->has(DatabaseSqlConnectionConfigInterface::class) &&
+        if ($configCollection->has(DatabaseMongoConnectionConfigInterface::class) &&
             (
                 $configCollection->has(SymfonySkeletonConfig::class) ||
                 $configCollection->has(SymfonyWebsiteSkeletonConfig::class)

@@ -1,0 +1,36 @@
+sync:
+  defaults:
+    ignore:
+      paths:
+        - .DS_Store
+  code:
+    alpha: "./"
+    beta: "docker://{directory-name}_php_1/opt/app"
+    mode: "two-way-resolved"
+    watch:
+      pollingInterval: 2
+    permissions:
+      defaultFileMode: 666
+      defaultDirectoryMode: 777
+    ignore:
+      vcs: true
+      paths:
+        - "/build/"
+        - "/vendor/"
+        - "/var/"
+  var:
+    alpha: "./var"
+    beta: "docker://{directory-name}_php_1/opt/app/var"
+    mode: "two-way-resolved"
+    permissions:
+      defaultFileMode: 666
+      defaultDirectoryMode: 777
+  vendor:
+    alpha: "./vendor"
+    beta: "docker://{directory-name}_php_1/opt/app/vendor"
+    mode: "two-way-resolved"
+    permissions:
+      defaultFileMode: 666
+      defaultDirectoryMode: 777
+    ignore:
+      vcs: false

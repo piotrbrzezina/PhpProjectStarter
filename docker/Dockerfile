@@ -19,7 +19,7 @@ RUN set -eux; \
 	mkdir -p var/cache var/log; \
 	chmod -f +x bin/console || true; \
     composer dump-autoload --classmap-authoritative; \
-	composer run-script  post-install-cmd; \
+	composer run-script post-install-cmd; \
 	composer clear-cache; \
     composer dump-env dev; \
     mkdir -p /opt/app/prod; \

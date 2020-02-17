@@ -10,7 +10,7 @@ use App\Generator\PhpExtension\PhpExtensionsConfigInterface;
 use App\Generator\PhpIni\PhpIniConfigInterface;
 use Twig\Environment as Twig;
 
-class PhpOpcacheExtension implements InitialConfigInterface, PhpIniConfigInterface, PhpExtensionsConfigInterface
+class PhpBaseExtension implements InitialConfigInterface, PhpIniConfigInterface, PhpExtensionsConfigInterface
 {
     private Twig $twig;
 
@@ -21,7 +21,7 @@ class PhpOpcacheExtension implements InitialConfigInterface, PhpIniConfigInterfa
 
     public function getPhpIniConfig(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Base/PhpOpcacheExtension/php.ini.twig');
+        return $this->twig->render('Config/Base/PhpBaseExtension/php.ini.twig');
     }
 
     /**
@@ -30,9 +30,9 @@ class PhpOpcacheExtension implements InitialConfigInterface, PhpIniConfigInterfa
     public function getPhpExtensions(ConfigCollection $configCollection): array
     {
         return [
+            'apcu',
             'opcache',
             'intl',
-            'cgi-fcgi',
         ];
     }
 }

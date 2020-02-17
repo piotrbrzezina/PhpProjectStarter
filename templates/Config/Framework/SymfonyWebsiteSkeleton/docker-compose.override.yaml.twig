@@ -1,0 +1,9 @@
+
+    nginx:
+        volumes:
+            - ./public:/opt/app/public
+
+    php:
+        volumes:
+            - .:/opt/app
+            - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini

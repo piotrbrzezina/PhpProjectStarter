@@ -42,7 +42,7 @@ final class LaravelConfig implements PhpExtensionsConfigInterface, DockerCompose
     public function getShelCommandToRun(ConfigCollection $configCollection): array
     {
         return [
-            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', '--ignore-platform-reqs', ' laravel/laravel', '.'],
+            ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', ' laravel/laravel', '.'],
         ];
     }
 

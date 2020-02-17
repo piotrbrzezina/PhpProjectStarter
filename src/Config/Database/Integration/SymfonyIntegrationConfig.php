@@ -47,12 +47,12 @@ class SymfonyIntegrationConfig implements FinishConfigInterface, MakefileSetupPr
 
         $libraries = [];
         if ($this->isSqlDatabaseSelected($configCollection)) {
-            $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, 'symfony/orm-pack', '--ignore-platform-reqs'];
+            $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, 'symfony/orm-pack'];
         } elseif ($this->isMongoSelected($configCollection)) {
-            $libraries[] = ['composer', 'remove', '--working-dir', $this->projectPath, 'symfony/orm-pack', '--ignore-platform-reqs'];
+            $libraries[] = ['composer', 'remove', '--working-dir', $this->projectPath, 'symfony/orm-pack'];
         }
 
-        $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, '--dev', 'symfony/maker-bundle', '--ignore-platform-reqs'];
+        $libraries[] = ['composer', 'require', '--working-dir', $this->projectPath, '--dev', 'symfony/maker-bundle'];
 
         return $libraries;
     }
