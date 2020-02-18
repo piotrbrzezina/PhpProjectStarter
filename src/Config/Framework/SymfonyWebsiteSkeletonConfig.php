@@ -210,7 +210,18 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
      */
     public function getPullRequestsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-pull-request.yml.twig');
+        $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-pull-request.yml.twig',
+            compact('projectName', 'clientName')
+        );
     }
 
     /**
@@ -234,7 +245,18 @@ final class SymfonyWebsiteSkeletonConfig implements ShelCommandConfigInterface, 
      */
     public function getTagsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-tag.yml.twig');
+        $projectName = 'defaultProjectName';
+        $clientName = 'defaultClientName';
+
+        if ($configurator = ProjectHelper::getProject($configCollection)) {
+            $projectName = $configurator->getName();
+            $clientName = $configurator->getClientName();
+        }
+
+        return $this->twig->render(
+            'Config/Framework/SymfonyWebsiteSkeleton/BitbucketPipelines/before-tag.yml.twig',
+            compact('projectName', 'clientName')
+        );
     }
 
     /**
