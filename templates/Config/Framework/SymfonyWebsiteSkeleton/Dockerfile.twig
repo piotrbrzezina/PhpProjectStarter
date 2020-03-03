@@ -3,7 +3,7 @@ COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR /opt/app
 
 
-FROM kazik.aws.tshdev.io/tsh/docker/php:7.4.2-latest as php
+FROM tshio/php-binary:7.4.3-latest as php
 COPY docker/php-fpm/php.ini /usr/local/etc/php/conf.d/99-overrides.ini
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 EXPOSE 9000

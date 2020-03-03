@@ -1,4 +1,4 @@
-FROM kazik.aws.tshdev.io/tsh/docker/php:7.4.2-latest as php
+FROM tshio/php-binary:7.4.3-latest as php
 RUN php-install php-fpm php curl mongodb;
 WORKDIR /opt/app/
 
