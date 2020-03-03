@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Question\Framework;
 
 use App\Config\Framework\SymfonySkeletonConfig;
-use App\Question\AdditionalQuestionProviderInterface;
+use App\Question\AdditionalQuestionInterface;
+use App\Question\QuestionInterface;
 use App\Question\UploadFileSize\UploadFileSizeQuestion;
 
-final class SymfonySkeletonOption implements FrameworkOptionInterface, AdditionalQuestionProviderInterface
+final class SymfonySkeletonOption // implements FrameworkOptionInterface, AdditionalQuestionProviderInterface
 {
     private UploadFileSizeQuestion $fileSizeQuestion;
     private SymfonySkeletonConfig $config;
@@ -29,6 +30,9 @@ final class SymfonySkeletonOption implements FrameworkOptionInterface, Additiona
         return false;
     }
 
+    /**
+     * @return QuestionInterface[]|AdditionalQuestionInterface[]
+     */
     public function getAdditionalQuestions(): array
     {
         return [

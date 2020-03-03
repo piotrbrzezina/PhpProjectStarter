@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Question\Framework;
 
 use App\Config\Framework\LaravelConfig;
-use App\Question\AdditionalQuestionProviderInterface;
+use App\Question\AdditionalQuestionInterface;
+use App\Question\QuestionInterface;
 use App\Question\UploadFileSize\UploadFileSizeQuestion;
 
-final class LaravelOption implements AdditionalQuestionProviderInterface, FrameworkOptionInterface
+final class LaravelOption //implements AdditionalQuestionProviderInterface, FrameworkOptionInterface
 {
     private UploadFileSizeQuestion $fileSizeQuestion;
     private LaravelConfig $config;
@@ -32,7 +33,7 @@ final class LaravelOption implements AdditionalQuestionProviderInterface, Framew
     }
 
     /**
-     * {@inheritdoc}
+     * @return QuestionInterface[]|AdditionalQuestionInterface[]
      */
     public function getAdditionalQuestions(): array
     {
