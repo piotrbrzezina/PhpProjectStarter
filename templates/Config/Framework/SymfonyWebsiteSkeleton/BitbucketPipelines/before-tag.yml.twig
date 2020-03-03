@@ -3,7 +3,6 @@
             image: docker/compose:alpine-1.25.3
             name: Build
             script:
-                - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD kazik.aws.tshdev.io
                 - docker build -f ./docker/Dockerfile --target builder -t szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${BUILD_TAG:-latest} .
                 - docker save --output tmp-build szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${BUILD_TAG:-latest}
                 - docker run --rm -v $PWD/:/opt/app szula.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${BUILD_TAG:-latest} composer install --prefer-dist --no-progress --no-suggest
