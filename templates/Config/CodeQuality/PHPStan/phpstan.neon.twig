@@ -2,6 +2,7 @@ includes:
     - /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
     - /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
+    inferPrivatePropertyTypeFromConstructor: true
     excludes_analyse:
         - /project/vendor
     autoload_directories:
