@@ -1,11 +1,11 @@
 
       - step:
             image: docker/compose:alpine-1.25.3
-            name: PhpSpec
+            name: PHPUnit
             script:
                 - apk add make
                 - cp ./docker-compose.override.yaml.dist ./docker-compose.override.yaml
                 - docker load --input ./tmp-build
-                - make phpspec-run
+                - make phpunit
             services:
                 - docker

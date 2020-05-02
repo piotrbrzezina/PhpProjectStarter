@@ -6,10 +6,11 @@ namespace App\Question\Framework;
 
 use App\Config\Framework\SymfonySkeletonConfig;
 use App\Question\AdditionalQuestionInterface;
+use App\Question\AdditionalQuestionProviderInterface;
 use App\Question\QuestionInterface;
 use App\Question\UploadFileSize\UploadFileSizeQuestion;
 
-final class SymfonySkeletonOption // implements FrameworkOptionInterface, AdditionalQuestionProviderInterface
+final class SymfonySkeletonOption implements FrameworkOptionInterface, AdditionalQuestionProviderInterface
 {
     private UploadFileSizeQuestion $fileSizeQuestion;
     private SymfonySkeletonConfig $config;

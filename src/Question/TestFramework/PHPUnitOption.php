@@ -6,7 +6,7 @@ namespace App\Question\TestFramework;
 
 use App\Config\TestFramework\PHPUnitConfig;
 
-class PHPUnitOption //implements TestFrameworkOptionInterface
+class PHPUnitOption implements TestFrameworkOptionInterface
 {
     private PHPUnitConfig $config;
 
