@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Generator\Framework;
 
 use App\Config\ConfigCollection;
+use App\Config\Framework\SymfonyConfig;
 use App\Config\Framework\SymfonySkeletonConfig;
 use App\Config\Framework\SymfonyWebsiteSkeletonConfig;
 use App\Config\ProjectName\ProjectConfig;
@@ -82,7 +83,7 @@ class SymfonyNameSpaceFixer implements GeneratorInterface
                 }
             }
 
-            if ($configCollection->has(SymfonyWebsiteSkeletonConfig::class)) {
+            if ($configCollection->has(SymfonyConfig::class)) {
                 if (!file_exists($this->projectPath.'/config/packages/dev')) {
                     mkdir($this->projectPath.'/config/packages/dev', 0777, true);
                 }
