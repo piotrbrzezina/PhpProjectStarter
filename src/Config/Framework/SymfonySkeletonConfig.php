@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Config\Framework;
 
 use App\Config\ConfigCollection;
+use App\Generator\Behat\BehatFeatureFileInterface;
 use App\Generator\DockerCompose\DockerComposeCiConfigInterface;
 use App\Generator\DockerCompose\DockerComposeConfigInterface;
 use App\Generator\Dockerfile\DockerfileBuildStepsConfigInterface;
@@ -18,14 +19,13 @@ use App\Generator\UploadFileSize\UploadFileSizeHelper;
 use Exception;
 use Twig\Environment as Twig;
 
-final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, NginxConfigInterface, PhpIniConfigInterface
+final class SymfonySkeletonConfig extends SymfonyConfig implements ShelCommandConfigInterface
 {
-    private Twig $twig;
     private string $projectPath;
 
     public function __construct(Twig $twig, string $projectPath)
     {
-        $this->twig = $twig;
+        parent::__construct($twig);
         $this->projectPath = $projectPath;
     }
 
@@ -35,109 +35,5 @@ final class SymfonySkeletonConfig implements ShelCommandConfigInterface, PhpExte
             ['composer', 'create-project', '--working-dir', $this->projectPath, '--prefer-dist', 'symfony/skeleton', '.'],
             ['composer', 'require', '--working-dir', $this->projectPath, '--dev', '--no-scripts', 'symfony/profiler-pack', 'symfony/debug-bundle'],
         ];
-    }
-
-    public function getPhpExtensions(ConfigCollection $configCollection): array
-    {
-        return ['php-fpm', 'php'];
-    }
-
-    /**
-     * @param ConfigCollection $configCollection
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getDockerfileBuildSteps(ConfigCollection $configCollection): string
-    {
-        $phpExtensions = PhpExtensionsHelper::getPhpExtensions($configCollection);
-
-        return $this->twig->render(
-            'Config/Framework/SymfonySkeleton/Dockerfile.twig',
-            compact('phpExtensions')
-        );
-    }
-
-    /**
-     * @param ConfigCollection $configCollection
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getDockerComposeData(ConfigCollection $configCollection): string
-    {
-        $projectName = 'defaultProjectName';
-
-        if ($configurator = ProjectHelper::getProject($configCollection)) {
-            $projectName = $configurator->getName();
-        }
-
-        return $this->twig->render(
-            'Config/Framework/SymfonySkeleton/docker-compose.yaml.twig',
-            compact('projectName')
-        );
-    }
-
-    public function getDockerComposeCiData(ConfigCollection $configCollection): string
-    {
-        $projectName = 'defaultProjectName';
-
-        if ($configurator = ProjectHelper::getProject($configCollection)) {
-            $projectName = $configurator->getName();
-        }
-
-        return $this->twig->render(
-            'Config/Framework/SymfonySkeleton/docker-compose-ci.yaml.twig',
-            compact('projectName')
-        );
-    }
-
-    /**
-     * @param ConfigCollection $configCollection
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getNginxConfig(ConfigCollection $configCollection): string
-    {
-        $clientMaxBodySize = 16;
-        if ($configurator = UploadFileSizeHelper::getUploadFileSize($configCollection)) {
-            $clientMaxBodySize = $configurator->getMaxBodySize();
-        }
-
-        return $this->twig->render(
-            'Config/Framework/SymfonySkeleton/nginx.conf.twig',
-            compact('clientMaxBodySize')
-        );
-    }
-
-    /**
-     * @param ConfigCollection $configCollection
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getPhpIniConfig(ConfigCollection $configCollection): string
-    {
-        $uploadMaxFileSize = 8;
-        $clientMaxBodySize = 16;
-        if ($configurator = UploadFileSizeHelper::getUploadFileSize($configCollection)) {
-            $clientMaxBodySize = $configurator->getMaxBodySize();
-            $uploadMaxFileSize = $configurator->getMaxUploadFileSize();
-        }
-
-        return $this->twig->render(
-            'Config/Framework/SymfonySkeleton/php.ini.twig',
-            compact('clientMaxBodySize', 'uploadMaxFileSize')
-        );
-    }
-
-    public function getMakefileContent(ConfigCollection $configCollection): string
-    {
-        return $this->twig->render('Config/Framework/SymfonySkeleton/Makefile.twig');
     }
 }
