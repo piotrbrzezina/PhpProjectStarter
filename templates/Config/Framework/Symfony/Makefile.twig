@@ -4,11 +4,11 @@ bash:
 	docker-compose exec php sh
 
 docker-build-image:
-	docker build --no-cache --target php_app --file ./docker/Dockerfile --tag kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest .
-	docker build --target nginx_app --file ./docker/Dockerfile --tag kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest .
+	docker build --no-cache --target php_app --file ./docker/Dockerfile --tag {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest .
+	docker build --target nginx_app --file ./docker/Dockerfile --tag {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest .
 
 docker-push-image:
-	docker tag kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${DOCKER-IMAGE-VERSION}
-	docker tag kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${DOCKER-IMAGE-VERSION}
-	docker push kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/php_app:${DOCKER-IMAGE-VERSION}
-	docker push kazik.aws.tshdev.io/{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${DOCKER-IMAGE-VERSION}
+	docker tag {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/php_app:latest {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/php_app:${DOCKER-IMAGE-VERSION}
+	docker tag {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:latest {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${DOCKER-IMAGE-VERSION}
+	docker push {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/php_app:${DOCKER-IMAGE-VERSION}
+	docker push {{ dockerWriteRepository }}{{ dockerRepositoryPrefix }}{{ clientName|lower }}/{{ projectName|lower }}/nginx_app:${DOCKER-IMAGE-VERSION}

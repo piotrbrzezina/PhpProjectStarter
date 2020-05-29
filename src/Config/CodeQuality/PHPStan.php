@@ -24,7 +24,7 @@ class PHPStan implements MakefileConfigInterface, FinishConfigInterface, PHPStan
         return $this->twig->render('Config/CodeQuality/PHPStan/Makefile.twig');
     }
 
-    public function getBitbucketPipelinesStep(ConfigCollection $configCollection): string
+    public function getBitbucketPipelinesStep(): string
     {
         return $this->twig->render('Config/CodeQuality/PHPStan/bitbucket-pipelines.yml.twig');
     }

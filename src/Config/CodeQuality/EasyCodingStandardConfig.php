@@ -44,7 +44,7 @@ class EasyCodingStandardConfig implements EasyCodingStandardConfigInterface, Mak
         return $this->twig->render('Config/CodeQuality/EasyCodingStandard/Makefile.twig');
     }
 
-    public function getBitbucketPipelinesStep(ConfigCollection $configCollection): string
+    public function getBitbucketPipelinesStep(): string
     {
         return $this->twig->render('Config/CodeQuality/EasyCodingStandard/bitbucket-pipelines.yml.twig');
     }
