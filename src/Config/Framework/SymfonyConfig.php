@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Config\Framework;
-
 
 use App\Config\ConfigCollection;
 use App\Config\ProjectName\ProjectConfig;
@@ -26,12 +26,24 @@ use Twig\Environment as Twig;
 
 abstract class SymfonyConfig implements PhpExtensionsConfigInterface, DockerfileBuildStepsConfigInterface, DockerComposeConfigInterface, DockerComposeCiConfigInterface, DockerComposeOverrideConfigInterface, NginxConfigInterface, PhpIniConfigInterface, MakefileConfigInterface, BitbucketPipelinesPullRequestConfigInterface, BitbucketPipelinesTagConfigInterface, BehatConfigInterface, GitIgnoreConfigInterface
 {
-
     private Twig $twig;
+    private string $dockerPhpBasieImage;
+    private string $dockerWriteRepository;
+    private string $dockerReadRepository;
+    private string $dockerRepositoryPrefix;
 
-    public function __construct(Twig $twig)
-    {
+    public function __construct(
+        Twig $twig,
+        string $dockerPhpBasieImage,
+        string $dockerWriteRepository,
+        string $dockerReadRepository,
+        string $dockerRepositoryPrefix
+    ) {
         $this->twig = $twig;
+        $this->dockerPhpBasieImage = $dockerPhpBasieImage;
+        $this->dockerWriteRepository = $dockerWriteRepository;
+        $this->dockerReadRepository = $dockerReadRepository;
+        $this->dockerRepositoryPrefix = $dockerRepositoryPrefix;
     }
 
     public function getPhpExtensions(ConfigCollection $configCollection): array
@@ -44,15 +56,16 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getDockerfileBuildSteps(ConfigCollection $configCollection): string
     {
         $phpExtensions = PhpExtensionsHelper::getPhpExtensions($configCollection);
+        $dockerPhpBasieImage = $this->dockerPhpBasieImage;
 
         return $this->twig->render(
             'Config/Framework/Symfony/Dockerfile.twig',
-            compact('phpExtensions')
+            compact('phpExtensions', 'dockerPhpBasieImage')
         );
     }
 
@@ -61,7 +74,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getDockerComposeData(ConfigCollection $configCollection): string
     {
@@ -84,12 +97,14 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getDockerComposeCiData(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
 
         if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
@@ -98,7 +113,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
 
         return $this->twig->render(
             'Config/Framework/Symfony/docker-compose-ci.yaml.twig',
-            compact('projectName', 'clientName')
+            compact('projectName', 'clientName', 'dockerReadRepository', 'dockerRepositoryPrefix')
         );
     }
 
@@ -107,12 +122,14 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getDockerComposeOverrideData(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
 
         if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
@@ -121,7 +138,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
 
         return $this->twig->render(
             'Config/Framework/Symfony/docker-compose.override.yaml.twig',
-            compact('projectName', 'clientName')
+            compact('projectName', 'clientName', 'dockerReadRepository', 'dockerRepositoryPrefix')
         );
     }
 
@@ -130,7 +147,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getNginxConfig(ConfigCollection $configCollection): string
     {
@@ -150,7 +167,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getPhpIniConfig(ConfigCollection $configCollection): string
     {
@@ -172,12 +189,14 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
+        $dockerWriteRepository = $this->dockerWriteRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
 
         if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
@@ -186,7 +205,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
 
         return $this->twig->render(
             'Config/Framework/Symfony/Makefile.twig',
-            compact('projectName', 'clientName')
+            compact('projectName', 'clientName', 'dockerWriteRepository', 'dockerRepositoryPrefix')
         );
     }
 
@@ -195,12 +214,14 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getPullRequestsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
 
         if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
@@ -209,7 +230,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
 
         return $this->twig->render(
             'Config/Framework/Symfony/BitbucketPipelines/before-pull-request.yml.twig',
-            compact('projectName', 'clientName')
+            compact('projectName', 'clientName', 'dockerReadRepository', 'dockerRepositoryPrefix')
         );
     }
 
@@ -218,11 +239,18 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getPullRequestsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/Symfony/BitbucketPipelines/after-pull-request.yml.twig');
+        $dockerWriteRepository = $this->dockerWriteRepository;
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
+
+        return $this->twig->render(
+            'Config/Framework/Symfony/BitbucketPipelines/after-pull-request.yml.twig',
+            compact('dockerWriteRepository', 'dockerReadRepository', 'dockerRepositoryPrefix')
+        );
     }
 
     /**
@@ -230,12 +258,14 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getTagsBeforeTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
         $projectName = 'defaultProjectName';
         $clientName = 'defaultClientName';
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
 
         if ($configurator = ProjectHelper::getProject($configCollection)) {
             $projectName = $configurator->getName();
@@ -244,7 +274,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
 
         return $this->twig->render(
             'Config/Framework/Symfony/BitbucketPipelines/before-tag.yml.twig',
-            compact('projectName', 'clientName')
+            compact('projectName', 'clientName', 'dockerReadRepository', 'dockerRepositoryPrefix')
         );
     }
 
@@ -253,11 +283,18 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getTagsAfterTestBitbucketPipelines(ConfigCollection $configCollection): string
     {
-        return $this->twig->render('Config/Framework/Symfony/BitbucketPipelines/after-tag.yml.twig');
+        $dockerWriteRepository = $this->dockerWriteRepository;
+        $dockerReadRepository = $this->dockerReadRepository;
+        $dockerRepositoryPrefix = $this->dockerRepositoryPrefix;
+
+        return $this->twig->render(
+            'Config/Framework/Symfony/BitbucketPipelines/after-tag.yml.twig',
+            compact('dockerWriteRepository', 'dockerReadRepository', 'dockerRepositoryPrefix')
+        );
     }
 
     /**
@@ -265,7 +302,7 @@ abstract class SymfonyConfig implements PhpExtensionsConfigInterface, Dockerfile
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getBehatConfig(ConfigCollection $configCollection): string
     {

@@ -29,13 +29,12 @@ class PHPUnitConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
         ];
     }
 
-
     /**
      * @param ConfigCollection $configCollection
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getMakefileContent(ConfigCollection $configCollection): string
     {
@@ -47,7 +46,7 @@ class PHPUnitConfig implements ShelCommandConfigInterface, MakefileConfigInterfa
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getTestToRunOnBitbucketPipelines(ConfigCollection $configCollection): string
     {

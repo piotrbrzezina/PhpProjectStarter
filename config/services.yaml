@@ -15,6 +15,10 @@ services:
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
     bind:
       string $projectPath: '%projectPath%'
+      string $dockerPhpBasieImage: '%env(string:DOCKER_PHP_BASE_IMAGE)%'
+      string $dockerWriteRepository: '%env(string:DOCKER_WRITE_REPOSITORY)%'
+      string $dockerReadRepository: '%env(string:DOCKER_READ_REPOSITORY)%'
+      string $dockerRepositoryPrefix: '%env(string:DOCKER_REPOSITORY_PREFIX)%'
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

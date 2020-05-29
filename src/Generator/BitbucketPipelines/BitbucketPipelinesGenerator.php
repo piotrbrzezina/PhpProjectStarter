@@ -18,6 +18,13 @@ class BitbucketPipelinesGenerator implements GeneratorInterface
         $this->projectPath = $projectPath;
     }
 
+    /**
+     * @param ConfigCollection $configCollection
+     * @param OutputInterface  $output
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity )
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     public function generate(ConfigCollection $configCollection, OutputInterface $output): void
     {
         $debugFormatter = new DebugFormatterHelper();

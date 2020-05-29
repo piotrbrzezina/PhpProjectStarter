@@ -33,9 +33,9 @@ class CodeQualityCodeQualityConfig implements DockerComposeConfigInterface, Fini
     public function getCodeQualityBitbucketPipelines(ConfigCollection $configCollection): string
     {
         $steps = [];
-        $steps[] = $this->ecs->getBitbucketPipelinesStep($configCollection);
-        $steps[] = $this->phpmd->getBitbucketPipelinesStep($configCollection);
-        $steps[] = $this->phpstan->getBitbucketPipelinesStep($configCollection);
+        $steps[] = $this->ecs->getBitbucketPipelinesStep();
+        $steps[] = $this->phpmd->getBitbucketPipelinesStep();
+        $steps[] = $this->phpstan->getBitbucketPipelinesStep();
 
         return $this->twig->render('Config/CodeQuality/bitbucket-pipelines.yml.twig', compact('steps'));
     }

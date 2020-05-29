@@ -23,7 +23,7 @@ class PHPMessDetector implements MakefileConfigInterface, FinishConfigInterface
         return $this->twig->render('Config/CodeQuality/PHPMessDetector/Makefile.twig');
     }
 
-    public function getBitbucketPipelinesStep(ConfigCollection $configCollection): string
+    public function getBitbucketPipelinesStep(): string
     {
         return $this->twig->render('Config/CodeQuality/PHPMessDetector/bitbucket-pipelines.yml.twig');
     }
